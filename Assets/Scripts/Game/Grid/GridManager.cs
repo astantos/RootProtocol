@@ -23,6 +23,7 @@ public class GridManager : NetworkBehaviour
 
     public Node[][] Grid { get; protected set; }
 
+    #region
     public void Setup()
     {
         SetupGrid();
@@ -78,7 +79,7 @@ public class GridManager : NetworkBehaviour
             }
         }
     }
-
+    #endregion
 
     #region Network Callbacks
     public override void OnStartClient()
@@ -86,5 +87,14 @@ public class GridManager : NetworkBehaviour
         base.OnStartClient();
         Setup();
     }
+    #endregion
+
+    #region RPCs
+    [ClientRpc]
+    public void SetNodeState(int x, int y, int state)
+    {
+        Grid[x][y].SetState((Node.State)state);
+    }
+
     #endregion
 }
