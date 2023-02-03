@@ -6,7 +6,7 @@ using MainModule = UnityEngine.ParticleSystem.MainModule;
 
 public class Node : MonoBehaviour
 {
-    public enum Owner { Neutral, P1, P2};
+    public enum Owner { Neutral, P1, P2 };
     [Serializable]
     public struct Direction
     {
@@ -37,6 +37,8 @@ public class Node : MonoBehaviour
     public GameObject PlayerOne;
     public GameObject PlayerTwo;
 
+    public Owner CurrentOwner { get; protected set; }
+
     private void Start()
     {
         MainModule p1main = P1Selected.main;
@@ -46,12 +48,12 @@ public class Node : MonoBehaviour
         p2main.startColor = PlayerTwoColor;
     }
 
-    public void SetState(Owner state)
+    public void SetState(Owner owner)
     {
-        Neutral.SetActive(state == Owner.Neutral);
-        PlayerOne.SetActive(state == Owner.P1);
-        PlayerTwo.SetActive(state == Owner.P2);
-        UpdateColor(state);
+        Neutral.SetActive(owner == Owner.Neutral);
+        PlayerOne.SetActive(owner == Owner.P1);
+        PlayerTwo.SetActive(owner == Owner.P2);
+        UpdateColor(owner);
     }
 
     protected void UpdateColor(Owner state)
