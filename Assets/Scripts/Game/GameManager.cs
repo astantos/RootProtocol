@@ -97,6 +97,9 @@ public class GameManager : NetworkBehaviour
     public void StartGame()
     {
         Debug.Log($"[GAME MANAGER] Starting Game");
+
+        GridManager.SetNodeState(0, 0, (int)Node.State.P1);
+        GridManager.SetNodeState(GridManager.GridDimensions.Width - 1, GridManager.GridDimensions.Height - 1, (int)Node.State.P2);
     }
 
     #region Network Callbacks
