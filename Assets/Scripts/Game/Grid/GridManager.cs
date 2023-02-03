@@ -9,6 +9,26 @@ using System;
 /*********************/
 public class GridManager : NetworkBehaviour
 {
+    public static GridManager Inst
+    {
+        get
+        {
+            if (_inst == null)
+            {
+                _inst = FindObjectOfType<GridManager>();
+            }
+
+            if (_inst == null)
+            {
+                Debug.LogError("[ CRITICAL ERROR ] There is no GridManager present in the scene");
+                return null;
+            }
+            return _inst;
+        }
+    }
+    public static GridManager _inst;
+
+
     [Serializable]
     public struct Dimensions
     {
