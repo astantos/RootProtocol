@@ -7,6 +7,8 @@ public class Player : NetworkBehaviour
 {
     public Camera MainCamera;
 
+    public Node Current { get; protected set; }
+
     #region Network Callbacks 
     public override void OnStartClient()
     {
@@ -46,5 +48,12 @@ public class Player : NetworkBehaviour
     {
         transform.position = pos;
     }
+
+    [ClientRpc]
+    public void SetCurrentNode(int x, int y)
+    {
+        Current = GridManager.Inst.GetNode(x, y);
+    }
+
     #endregion
 }

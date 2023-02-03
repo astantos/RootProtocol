@@ -98,8 +98,15 @@ public class GameManager : NetworkBehaviour
     {
         Debug.Log($"[GAME MANAGER] Starting Game");
 
+        // Player One Setup
+        PlayerOne.SetCurrentNode(0, 0);
         GridManager.SetNodeState(0, 0, (int)Node.State.P1);
-        GridManager.SetNodeState(GridManager.GridDimensions.Width - 1, GridManager.GridDimensions.Height - 1, (int)Node.State.P2);
+
+        // Player Two Setup
+        int x = GridManager.Grid.Length - 1;
+        int y = GridManager.Grid[x].Length- 1;
+        PlayerTwo.SetCurrentNode(x, y);
+        GridManager.SetNodeState(x, y, (int)Node.State.P2);
     }
 
     #region Network Callbacks
