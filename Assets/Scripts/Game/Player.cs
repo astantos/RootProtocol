@@ -31,6 +31,7 @@ public class Player : NetworkBehaviour
         int result = GameManager.Inst.RegisterPlayer(gameObject);
         PlayerRegistrationResponse(conn, result);
     }
+
     #endregion
 
     #region RPCS
@@ -40,5 +41,10 @@ public class Player : NetworkBehaviour
         Debug.Log($"[ CLIENT ] Registration Response {(result != -1 ? "SUCCESS" : "FAILURE")}");
     }
 
+    [ClientRpc]
+    public void SetPosition(Vector3 pos)
+    {
+        transform.position = pos;
+    }
     #endregion
 }

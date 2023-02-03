@@ -20,7 +20,7 @@ public class GridManager : MonoBehaviour
 
     public float Margin;
 
-    protected Node[][] Grid;
+    public Node[][] Grid { get; protected set; }
 
     public void Spawn()
     {

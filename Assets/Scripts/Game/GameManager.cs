@@ -29,13 +29,30 @@ public class GameManager : NetworkBehaviour
 
     public GridManager GridManagerPrefab;
     public GridManager GridManager;
+
     [SyncVar][SerializeField] Player PlayerOne;
     [SyncVar][SerializeField] Player PlayerTwo;
+
+    public Vector3 PlayerPos
+    {
+        get
+        {
+            Vector3 firstPos = GridManager.Grid[0][0].transform.position;
+            int width = GridManager.Grid.Length;
+            int height = GridManager.Grid[width - 1].Length;
+            Vector3 secondPos = GridManager.Grid[width - 1][height - 1].transform.position;
+
+            return new Vector3(
+                (firstPos.x + secondPos.x)/2,
+                (firstPos.y + secondPos.y)/2,
+                (firstPos.z + secondPos.z)/2
+            );
+        }
+    }
 
     public void CreateGrid()
     {
         GridManager = GameObject.Instantiate(GridManagerPrefab);
-        //NetworkServer.Spawn(GridManager.gameObject);
         GridManager.Spawn();
     }
 
@@ -56,6 +73,8 @@ public class GameManager : NetworkBehaviour
                 PlayerTwo = playerScript;
                 result = 1;
             }
+
+            playerScript.SetPosition(PlayerPos);
         }
 
         return result;
