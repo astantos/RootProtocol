@@ -122,7 +122,18 @@ public class GameManager : NetworkBehaviour
     #region Game Logic
     public void MovePlayer(int player, int x, int y)
     {
-        Debug.Log($"[GAME MANAGER] {((Node.Owner)player).ToString()} requested to move to {x}, {y}");
+        Node.Owner owner = (Node.Owner)player;
+        Debug.Log($"[GAME MANAGER] {owner.ToString()} requested to move to {x}, {y}");
+
+        if (GridManager.Grid[x][y].CurrentOwner == Node.Owner.Neutral)
+        {
+            GridManager.Grid[x][y].SetState(owner);
+
+            if (owner == Node.Owner.P1)
+                PlayerOne.SetCurrentNode(x, y);
+            else if (owner == Node.Owner.P2)
+                PlayerTwo.SetCurrentNode(x, y);
+        }
     }
     #endregion
 
