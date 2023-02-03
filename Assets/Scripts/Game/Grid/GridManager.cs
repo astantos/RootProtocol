@@ -52,6 +52,7 @@ public class GridManager : NetworkBehaviour
                     y * (Grid[x][y].Dimensions.y + Margin),
                     0
                 );
+                Grid[x][y].SetState(Node.State.Neutral);
                 count++;
             }
         }
