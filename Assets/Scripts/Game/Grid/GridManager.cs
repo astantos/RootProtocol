@@ -66,6 +66,7 @@ public class GridManager : NetworkBehaviour
                 }
 
                 Grid[x][y] = NodeArray[count];
+                Grid[x][y].Coord = new Node.Coords { x = x, y = y };
                 Grid[x][y].gameObject.name = $"Node{x}x{y}";
                 Grid[x][y].transform.position = new Vector3
                 (

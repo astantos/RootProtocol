@@ -15,6 +15,11 @@ public class Node : MonoBehaviour
     }
     public Vector3 Dimensions;
 
+    [Serializable]
+    public struct Coords { public int x, y; }
+    public Coords Coord;
+
+    [Space]
     public Direction Up;
     public Direction Down;
     public Direction Left;

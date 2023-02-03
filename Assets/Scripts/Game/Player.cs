@@ -10,6 +10,8 @@ public class Player : NetworkBehaviour
     public Node.Owner PlayerOwner;
     public Node Current { get; protected set; }
 
+    protected Coroutine controlRoutine;
+
     #region Network Callbacks 
     public override void OnStartClient()
     {
@@ -35,6 +37,11 @@ public class Player : NetworkBehaviour
         PlayerRegistrationResponse(conn, result);
     }
 
+    [Command]
+    public void RequestPlayerMove(int x, int y)
+    {
+        GameManager.Inst.MovePlayer((int)PlayerOwner, x, y);
+    }
     #endregion
 
     #region RPCS
@@ -48,6 +55,13 @@ public class Player : NetworkBehaviour
     public void SetPlayerOwner(int owner)
     {
         PlayerOwner = (Node.Owner)owner;
+    }
+
+    [ClientRpc]
+    public void StartPlayerControl()
+    {
+        if (isLocalPlayer)
+            controlRoutine = StartCoroutine(PlayerControlRoutine());
     }
 
     [ClientRpc]
@@ -68,4 +82,34 @@ public class Player : NetworkBehaviour
     }
 
     #endregion
+
+    protected IEnumerator PlayerControlRoutine()
+    {
+        Debug.Log($"[PLAYER] {((Node.Owner)PlayerOwner).ToString()} Control Started");
+        while (true)
+        {
+            Node target = null;
+            if (Input.GetKeyDown(KeyCode.UpArrow) && Current.Up.Node != null)
+            {
+                target = Current.Up.Node;
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow) && Current.Down.Node != null)
+            {
+                target = Current.Down.Node;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow) && Current.Left.Node != null)
+            {
+                target = Current.Left.Node;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow) && Current.Right.Node != null)
+            {
+                target = Current.Right.Node;
+            }
+
+            if (target != null)
+                RequestPlayerMove(target.Coord.x, target.Coord.y);
+
+            yield return null;
+        }
+    }
 }

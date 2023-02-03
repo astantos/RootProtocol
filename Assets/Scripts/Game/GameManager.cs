@@ -51,7 +51,7 @@ public class GameManager : NetworkBehaviour
     }
 
     protected Coroutine gameRoutine;
-
+    #region Game Init
     public void Initialize()
     {
         GridManager = GameObject.Instantiate(GridManagerPrefab);
@@ -113,7 +113,18 @@ public class GameManager : NetworkBehaviour
         int y = GridManager.Grid[x].Length- 1;
         PlayerTwo.SetCurrentNode(x, y);
         GridManager.SetNodeState(x, y, (int)Node.Owner.P2);
+
+        PlayerOne.StartPlayerControl();
+        PlayerTwo.StartPlayerControl();
     }
+    #endregion
+
+    #region Game Logic
+    public void MovePlayer(int player, int x, int y)
+    {
+        Debug.Log($"[GAME MANAGER] {((Node.Owner)player).ToString()} requested to move to {x}, {y}");
+    }
+    #endregion
 
     #region Network Callbacks
     public override void OnStartClient()
