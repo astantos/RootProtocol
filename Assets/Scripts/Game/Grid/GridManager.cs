@@ -26,6 +26,7 @@ public class GridManager : NetworkBehaviour
     public void Setup()
     {
         SetupGrid();
+        SetupNodes();
     }
 
     protected void SetupGrid()
@@ -52,6 +53,27 @@ public class GridManager : NetworkBehaviour
                     0
                 );
                 count++;
+            }
+        }
+    }
+
+    protected void SetupNodes()
+    {
+        for (int x = 0; x < Grid.Length; x++)
+        {
+            for (int y = 0; y < Grid[x].Length; y++)
+            {
+                // Direction UP
+                if (y < Grid[x].Length - 1) Grid[x][y].Up = Grid[x][y + 1];
+
+                // Direction DOWN
+                if (y > 0) Grid[x][y].Down = Grid[x][y - 1];
+
+                // Direction LEFT
+                if (x > 0) Grid[x][y].Left = Grid[x - 1][y];
+
+                // Direction RIGHT
+                if (x < Grid.Length - 1) Grid[x][y].Right = Grid[x + 1][y];
             }
         }
     }
