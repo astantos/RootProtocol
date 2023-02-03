@@ -134,6 +134,13 @@ public class GameManager : NetworkBehaviour
             else if (owner == Node.Owner.P2)
                 PlayerTwo.SetCurrentNode(x, y);
         }
+        else if (GridManager.Grid[x][y].CurrentOwner == owner)
+        {
+            if (owner == Node.Owner.P1)
+                PlayerOne.SetCurrentNode(x, y);
+            else if (owner == Node.Owner.P2)
+                PlayerTwo.SetCurrentNode(x, y);
+        }
     }
     #endregion
 
