@@ -4973,7 +4973,7 @@ MonoBehaviour:
   Right:
     Node: {fileID: 0}
     particles: {fileID: 8398943759586757691}
-  NeutralColor: {r: 1, g: 1, b: 1, a: 1}
+  NeutralColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   PlayerOneColor: {r: 0, g: 1, b: 0, a: 1}
   PlayerTwoColor: {r: 1, g: 0, b: 0, a: 1}
   Neutral: {fileID: 7387831734166621693}
