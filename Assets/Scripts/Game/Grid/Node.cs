@@ -53,6 +53,7 @@ public class Node : MonoBehaviour
         Neutral.SetActive(owner == Owner.Neutral);
         PlayerOne.SetActive(owner == Owner.P1);
         PlayerTwo.SetActive(owner == Owner.P2);
+        CurrentOwner = owner;
         UpdateColor(owner);
     }
 
