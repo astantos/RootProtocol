@@ -43,7 +43,7 @@ public class GridManager : NetworkBehaviour
 
     public Node[][] Grid { get; protected set; }
 
-    #region
+    #region Setup
     public void Setup()
     {
         SetupGrid();
@@ -100,6 +100,13 @@ public class GridManager : NetworkBehaviour
         }
     }
     #endregion
+
+    public Node GetNode(int x, int y)
+    {
+        if (x < 0 || x > Grid.Length - 1) return null;
+        if (y < 0 || y > Grid[x].Length - 1) return null;
+        return Grid[x][y];
+    }
 
     #region Network Callbacks
     public override void OnStartClient()
