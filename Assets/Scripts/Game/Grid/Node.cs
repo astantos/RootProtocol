@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
-public class Node : NetworkBehaviour
+public class Node : MonoBehaviour
 {
     public Vector3 Dimensions;
 }

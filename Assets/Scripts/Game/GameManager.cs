@@ -53,7 +53,7 @@ public class GameManager : NetworkBehaviour
     public void CreateGrid()
     {
         GridManager = GameObject.Instantiate(GridManagerPrefab);
-        GridManager.Spawn();
+        NetworkServer.Spawn(GridManager.gameObject);
     }
 
     public int RegisterPlayer(GameObject player)
