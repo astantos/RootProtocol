@@ -5,6 +5,8 @@ using Mirror;
 
 public class CustomNetworkManager : NetworkManager
 {
+    [Space(50)]
+
     public GameManager GameManagerPrefab;
 
     protected GameManager gameManager;

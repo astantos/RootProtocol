@@ -23,4 +23,16 @@ public class GameManager : NetworkBehaviour
         }
     }
     public static GameManager _inst;
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        Debug.Log("[GAME MANAGER] Client Connected");
+    }
+
+    public override void OnStopClient()
+    {
+        base.OnStopClient();
+        Debug.Log("[GAME MANAGER] Client Disconnected");
+    }
 }
