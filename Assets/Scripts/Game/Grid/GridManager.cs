@@ -7,7 +7,7 @@ using System;
 /***************/
 /* SERVER ONLY */
 /***************/
-public class GridManager : NetworkBehaviour
+public class GridManager : MonoBehaviour
 {
     [Serializable]
     public struct Dimensions
@@ -20,35 +20,17 @@ public class GridManager : NetworkBehaviour
 
     public float Margin;
 
-    public Node[][] Grid()
-    {
-        if (_grid == null)
-        {
-            _grid = new Node[GridDimensions.Width][];
-            for (int x = 0; x < _grid[x].Length; x++)
-            {
-                _grid[x] = new Node[GridDimensions.Height];
-            }
-        }
-        return _grid;
-    }
-    protected Node[][] _grid;
-
+    public Node[][] Grid { get; protected set; }
 
     public void Spawn()
     {
-        InitializeGrid();
-        SetupNodes();
-    }
-
-    protected void InitializeGrid()
-    {
+        Grid = new Node[GridDimensions.Width][];
         for (int x = 0; x < Grid.Length; x++)
         {
+            Grid[x] = new Node[GridDimensions.Height];
             for (int y = 0; y < Grid[x].Length; y++)
             {
                 Grid[x][y] = GameObject.Instantiate(NodePrefab);
-                Grid[x][y].Coords = new Vector2(x, y);
                 NetworkServer.Spawn(Grid[x][y].gameObject);
 
                 Grid[x][y].transform.position = new Vector3
@@ -61,40 +43,17 @@ public class GridManager : NetworkBehaviour
         }
     }
 
-    protected void SetupNodes()
+    private void Update()
     {
-        Debug.LogWarning($"Grid: {Grid.Length}");
-        for (int x = 0; x < Grid.Length; x++)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            for (int y = 0; y < Grid[x].Length; y++)
+            for (int x = 0; x < Grid.Length; x++)
             {
-                // Direction UP
-                if (y < Grid[x].Length - 1) 
-                    Grid[x][y].UpGO = Grid[x][y + 1].gameObject;
-                
-                // Direction DOWN 
-                if (y > 0) 
-                    Grid[x][y].DownGO = Grid[x][y - 1].gameObject;
-
-                // Direction LEFT
-                if (x > 0)
-                    Grid[x][y].LeftGO =  Grid[x - 1][y].gameObject;
-
-                // Direction RIGHT
-                if (x < Grid.Length - 1)
-                    Grid[x][y].RightGO = Grid[x + 1][y].gameObject;
+                for (int y = 0; y < Grid[x].Length; y++)
+                {
+                    Debug.Log($"{Grid[x][y].gameObject.name}");
+                }
             }
         }
     }
-
-    #region Network Callbacks
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        if (!isServer)
-        {
-            SetupNodes();
-        }
-    }
-    #endregion
 }
