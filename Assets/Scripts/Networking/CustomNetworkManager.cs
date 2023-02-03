@@ -14,6 +14,7 @@ public class CustomNetworkManager : NetworkManager
     #region Server Callbacks
     public override void OnStartServer()
     {
+        base.OnStartServer();
         Debug.Log("[ SERVER ] Server has been started");
         gameManager = GameObject.Instantiate(GameManagerPrefab);
         NetworkServer.Spawn(gameManager.gameObject);
@@ -22,6 +23,7 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnStopServer()
     {
+        base.OnStopServer();
         Debug.Log("[ SERVER ] Server has been stopped");
     }
 

@@ -29,6 +29,8 @@ public class GameManager : NetworkBehaviour
 
     public GridManager GridManagerPrefab;
     public GridManager GridManager;
+    [SyncVar][SerializeField] Player PlayerOne;
+    [SyncVar][SerializeField] Player PlayerTwo;
 
     public void CreateGrid()
     {
@@ -37,6 +39,34 @@ public class GameManager : NetworkBehaviour
         GridManager.Spawn();
     }
 
-    #region Server Callbacks
+    public int RegisterPlayer(GameObject player)
+    {
+        Player playerScript = player.GetComponent<Player>();
+        int result = -1;
+
+        if (player != null)
+        {
+            if (PlayerOne == null)
+            {
+                PlayerOne = playerScript;
+                result = 0;
+            }
+            else if (PlayerTwo == null)
+            {
+                PlayerTwo = playerScript;
+                result = 1;
+            }
+        }
+
+        return result;
+    }
+
+    #region Network Callbacks
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        Debug.Log("[GAME MANAGER] Client Connected");
+    }
+    
     #endregion
 }
