@@ -6,7 +6,7 @@ using MainModule = UnityEngine.ParticleSystem.MainModule;
 
 public class Node : MonoBehaviour
 {
-    public enum State { Neutral, P1, P2};
+    public enum Owner { Neutral, P1, P2};
     [Serializable]
     public struct Direction
     {
@@ -41,21 +41,21 @@ public class Node : MonoBehaviour
         p2main.startColor = PlayerTwoColor;
     }
 
-    public void SetState(State state)
+    public void SetState(Owner state)
     {
-        Neutral.SetActive(state == State.Neutral);
-        PlayerOne.SetActive(state == State.P1);
-        PlayerTwo.SetActive(state == State.P2);
+        Neutral.SetActive(state == Owner.Neutral);
+        PlayerOne.SetActive(state == Owner.P1);
+        PlayerTwo.SetActive(state == Owner.P2);
         UpdateColor(state);
     }
 
-    protected void UpdateColor(State state)
+    protected void UpdateColor(Owner state)
     {
         Color color;
         switch (state)
         {
-            case State.P1: color = PlayerOneColor; break;
-            case State.P2: color = PlayerTwoColor; break;
+            case Owner.P1: color = PlayerOneColor; break;
+            case Owner.P2: color = PlayerTwoColor; break;
             default: color = NeutralColor; break;
         }
 
@@ -72,14 +72,14 @@ public class Node : MonoBehaviour
         rightMain.startColor = color;
     }
 
-    protected void SetSelected(State state, bool selected)
+    public void SetSelected(Owner state, bool selected)
     {
-        if (state == State.P1)
+        if (state == Owner.P1)
         {
             if (selected) P1Selected.Play();
             else P1Selected.Stop();
         }
-        else if (state == State.P2)
+        else if (state == Owner.P2)
         {
             if (selected) P2Selected.Play();
             else P2Selected.Stop();

@@ -70,11 +70,17 @@ public class GameManager : NetworkBehaviour
             if (PlayerOne == null)
             {
                 PlayerOne = playerScript;
+                PlayerOne.SetPlayerOwner((int)Node.Owner.P1);
                 result = 0;
             }
             else if (PlayerTwo == null)
             {
                 PlayerTwo = playerScript;
+                PlayerTwo.SetPlayerOwner((int)Node.Owner.P2);
+
+                // Somewhat shifty code . . .
+                // Also Register Player One, which must exist since we are on Player 2
+                PlayerOne.SetPlayerOwner((int)Node.Owner.P1);
                 result = 1;
             }
 
@@ -100,13 +106,13 @@ public class GameManager : NetworkBehaviour
 
         // Player One Setup
         PlayerOne.SetCurrentNode(0, 0);
-        GridManager.SetNodeState(0, 0, (int)Node.State.P1);
+        GridManager.SetNodeState(0, 0, (int)Node.Owner.P1);
 
         // Player Two Setup
         int x = GridManager.Grid.Length - 1;
         int y = GridManager.Grid[x].Length- 1;
         PlayerTwo.SetCurrentNode(x, y);
-        GridManager.SetNodeState(x, y, (int)Node.State.P2);
+        GridManager.SetNodeState(x, y, (int)Node.Owner.P2);
     }
 
     #region Network Callbacks

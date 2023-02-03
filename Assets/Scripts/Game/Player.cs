@@ -7,6 +7,7 @@ public class Player : NetworkBehaviour
 {
     public Camera MainCamera;
 
+    public Node.Owner PlayerOwner;
     public Node Current { get; protected set; }
 
     #region Network Callbacks 
@@ -44,6 +45,12 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
+    public void SetPlayerOwner(int owner)
+    {
+        PlayerOwner = (Node.Owner)owner;
+    }
+
+    [ClientRpc]
     public void SetPosition(Vector3 pos)
     {
         transform.position = pos;
@@ -52,7 +59,12 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void SetCurrentNode(int x, int y)
     {
+        if (Current != null)
+        {
+            Current.SetSelected(PlayerOwner, false);
+        }
         Current = GridManager.Inst.GetNode(x, y);
+        Current.SetSelected(PlayerOwner, true);
     }
 
     #endregion

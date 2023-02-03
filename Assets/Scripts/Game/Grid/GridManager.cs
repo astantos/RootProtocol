@@ -73,7 +73,7 @@ public class GridManager : NetworkBehaviour
                     y * (Grid[x][y].Dimensions.y + Margin),
                     0
                 );
-                Grid[x][y].SetState(Node.State.Neutral);
+                Grid[x][y].SetState(Node.Owner.Neutral);
                 count++;
             }
         }
@@ -137,7 +137,7 @@ public class GridManager : NetworkBehaviour
     [ClientRpc]
     public void SetNodeState(int x, int y, int state)
     {
-        Grid[x][y].SetState((Node.State)state);
+        Grid[x][y].SetState((Node.Owner)state);
     }
 
     #endregion
