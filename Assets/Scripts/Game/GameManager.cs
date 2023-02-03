@@ -50,10 +50,14 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    public void CreateGrid()
+    protected Coroutine gameRoutine;
+
+    public void Initialize()
     {
         GridManager = GameObject.Instantiate(GridManagerPrefab);
         NetworkServer.Spawn(GridManager.gameObject);
+
+        gameRoutine = StartCoroutine(WaitForPlayers());
     }
 
     public int RegisterPlayer(GameObject player)
@@ -80,12 +84,29 @@ public class GameManager : NetworkBehaviour
         return result;
     }
 
+    protected IEnumerator WaitForPlayers()
+    {
+        while (true)
+        {
+            if (PlayerOne != null && PlayerTwo != null) break;
+            yield return null;
+        }
+        StartGame();
+    }
+    
+    public void StartGame()
+    {
+        Debug.Log($"[GAME MANAGER] Starting Game");
+    }
+
     #region Network Callbacks
     public override void OnStartClient()
     {
         base.OnStartClient();
         Debug.Log("[GAME MANAGER] Client Connected");
     }
-    
+    #endregion
+
+    #region Commands
     #endregion
 }
