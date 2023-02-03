@@ -86,16 +86,33 @@ public class GridManager : NetworkBehaviour
             for (int y = 0; y < Grid[x].Length; y++)
             {
                 // Direction UP
-                if (y < Grid[x].Length - 1) Grid[x][y].Up = Grid[x][y + 1];
+                if (y < Grid[x].Length - 1)
+                {
+                    Grid[x][y].Up.Node = Grid[x][y + 1];
+                    Grid[x][y].Up.particles.Play();
+                }
 
                 // Direction DOWN
-                if (y > 0) Grid[x][y].Down = Grid[x][y - 1];
+                if (y > 0)
+                {
+                    Grid[x][y].Down.Node = Grid[x][y - 1];
+                    Grid[x][y].Down.particles.Play();
+                }
 
                 // Direction LEFT
-                if (x > 0) Grid[x][y].Left = Grid[x - 1][y];
+                if (x > 0)
+                {
+                    Grid[x][y].Left.Node = Grid[x - 1][y];
+                    Grid[x][y].Left.particles.Play();
+                }
+
 
                 // Direction RIGHT
-                if (x < Grid.Length - 1) Grid[x][y].Right = Grid[x + 1][y];
+                if (x < Grid.Length - 1)
+                {
+                    Grid[x][y].Right.Node = Grid[x + 1][y];
+                    Grid[x][y].Right.particles.Play();
+                }
             }
         }
     }

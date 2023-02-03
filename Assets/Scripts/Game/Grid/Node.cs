@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,18 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public enum State { Neutral, P1, P2};
+    [Serializable]
+    public struct Direction
+    {
+        public Node Node;
+        public ParticleSystem particles;
+    }
     public Vector3 Dimensions;
 
-    public Node Up;
-    public Node Down;
-    public Node Left;
-    public Node Right;
+    public Direction Up;
+    public Direction Down;
+    public Direction Left;
+    public Direction Right;
 
     [Header("References")]
     public GameObject Neutral;
