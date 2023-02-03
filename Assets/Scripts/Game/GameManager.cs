@@ -127,7 +127,7 @@ public class GameManager : NetworkBehaviour
 
         if (GridManager.Grid[x][y].CurrentOwner == Node.Owner.Neutral)
         {
-            GridManager.Grid[x][y].SetState(owner);
+            GridManager.SetNodeState(x, y, player);
 
             if (owner == Node.Owner.P1)
                 PlayerOne.SetCurrentNode(x, y);
