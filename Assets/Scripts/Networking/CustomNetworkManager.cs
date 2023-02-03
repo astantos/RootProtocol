@@ -17,6 +17,7 @@ public class CustomNetworkManager : NetworkManager
         Debug.Log("[ SERVER ] Server has been started");
         gameManager = GameObject.Instantiate(GameManagerPrefab);
         NetworkServer.Spawn(gameManager.gameObject);
+        gameManager.CreateGrid();
     }
 
     public override void OnStopServer()

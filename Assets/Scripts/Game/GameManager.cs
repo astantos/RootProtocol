@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+/*********************/
+/* SERVER AND CLIENT */
+/*********************/
 public class GameManager : NetworkBehaviour
 {
     public static GameManager Inst
@@ -24,15 +27,16 @@ public class GameManager : NetworkBehaviour
     }
     public static GameManager _inst;
 
-    public override void OnStartClient()
+    public GridManager GridManagerPrefab;
+    public GridManager GridManager;
+
+    public void CreateGrid()
     {
-        base.OnStartClient();
-        Debug.Log("[GAME MANAGER] Client Connected");
+        GridManager = GameObject.Instantiate(GridManagerPrefab);
+        //NetworkServer.Spawn(GridManager.gameObject);
+        GridManager.Spawn();
     }
 
-    public override void OnStopClient()
-    {
-        base.OnStopClient();
-        Debug.Log("[GAME MANAGER] Client Disconnected");
-    }
+    #region Server Callbacks
+    #endregion
 }

@@ -62,6 +62,7 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 4444871133856922191, guid: 2c64b41edcfdbe74a898baa169a85cff, type: 3}
+  - {fileID: 1794105751593230126, guid: c6bc1796a3dc08b499f36e8d3cc14d9e, type: 3}
   timeInterpolationGui: 0
   GameManagerPrefab: {fileID: 8985632199265352676, guid: 2c64b41edcfdbe74a898baa169a85cff, type: 3}
 --- !u!114 &3842407538295948562
