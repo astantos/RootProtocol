@@ -106,6 +106,7 @@ public class GameManager : NetworkBehaviour
 
         // Player One Setup
         PlayerOne.SetCurrentNode(0, 0);
+        PlayerOne.SetStartNode(0, 0);
         GridManager.SetNodeState(0, 0, (int)Node.Owner.P1);
 
         // Player Two Setup

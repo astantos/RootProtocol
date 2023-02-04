@@ -19,6 +19,8 @@ public class Player : NetworkBehaviour
 
     public GameObject Instructions;
 
+    public Node StartNode { get; protected set; }
+    public Node Previous { get; protected set; }
     public Node Current { get; protected set; }
     protected Coroutine controlRoutine;
 
@@ -98,11 +100,18 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
+    public void SetStartNode(int x, int y)
+    {
+        StartNode = GridManager.Inst.GetNode(x, y);
+    }
+
+    [ClientRpc]
     public void SetCurrentNode(int x, int y)
     {
         if (Current != null)
         {
-            Current.SetSelected(PlayerOwner, false);
+            Previous = Current;
+            Previous.SetSelected(PlayerOwner, false);
         }
         Current = GridManager.Inst.GetNode(x, y);
         Current.SetSelected(PlayerOwner, true);
