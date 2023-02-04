@@ -32,6 +32,7 @@ public class GameManager : NetworkBehaviour
 
     public int CaptureBaseLines;
     public int EnemyNodeDifficulty;
+    public int ContestBuffer;
 
     [SyncVar] [SerializeField] Player PlayerOne;
     [SyncVar] [SerializeField] Player PlayerTwo;
@@ -54,6 +55,10 @@ public class GameManager : NetworkBehaviour
     }
 
     protected Coroutine gameRoutine;
+
+    // Capture \\
+    protected Node PlayerOneTarget;
+    protected Node PlayerTwoTarget;
 
     #region Game Init
     public void Initialize()
@@ -139,38 +144,65 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            //GridManager.SetNodeState(x, y, player);
+            bool contested = false;
             if (owner == Node.Owner.P1)
+            {
                 PlayerOne.SetCurrentNode(x, y);
+                PlayerOneTarget = GridManager.Grid[x][y];
+                if (PlayerTwoTarget != null && x == PlayerTwoTarget.Coord.x && y == PlayerTwoTarget.Coord.y)
+                {
+                    contested = true;
+                    PlayerTwo.SetContested(contested);
+                }
+
+                PlayerOne.StartPlayerCapture(contested);
+            }
             else if (owner == Node.Owner.P2)
+            {
                 PlayerTwo.SetCurrentNode(x, y);
-            PlayerStartCapture(x, y, owner);
+                PlayerTwoTarget = GridManager.Grid[x][y];
+                if (PlayerOneTarget != null && x == PlayerOneTarget.Coord.x && y == PlayerOneTarget.Coord.y)
+                {
+                    contested = true;
+                    PlayerOne.SetContested(true);
+                }
+
+                PlayerTwo.StartPlayerCapture(contested);
+            }
         }
     }
 
-    public void PlayerStartCapture(int x, int y, Node.Owner owner)
+    public void AcceptBufferComplete(Node.Owner owner)
     {
         if (owner == Node.Owner.P1)
-            PlayerOne.StartPlayerCapture();
+        {
+            PlayerTwo.AcceptIncomingBuffer();
+        }
         else if (owner == Node.Owner.P2)
-            PlayerTwo.StartPlayerCapture();
+        {
+            PlayerOne.AcceptIncomingBuffer();
+        }
     }
 
     public void PlayerCaptureNode(Node.Owner owner)
     {
         Player player = null;
         if (owner == Node.Owner.P1)
+        {
             player = PlayerOne;
+            PlayerOneTarget = null;
+        }
         else if (owner == Node.Owner.P2)
+        {
             player = PlayerTwo;
+            PlayerTwoTarget = null;
+        }
 
         if (player != null)
         {
             GridManager.SetNodeState(player.Current.Coord.x, player.Current.Coord.y, (int)owner);
             player.StartPlayerControl();
         }
-
-
     }
 
     #endregion
@@ -181,8 +213,5 @@ public class GameManager : NetworkBehaviour
         base.OnStartClient();
         Debug.Log("[GAME MANAGER] Client Connected");
     }
-    #endregion
-
-    #region Commands
     #endregion
 }

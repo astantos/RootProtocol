@@ -24,6 +24,16 @@ public class Player : NetworkBehaviour
     public Node Current { get; protected set; }
     protected Coroutine controlRoutine;
 
+    #region Capture Variables
+    protected List<string> commandList;
+    protected bool contested;
+    #endregion
+
+    private void Start()
+    {
+        commandList = new List<string>();
+    }
+
     #region Network Callbacks 
     public override void OnStartClient()
     {
@@ -56,6 +66,12 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
+    public void ReportBufferComplete()
+    {
+        GameManager.Inst.AcceptBufferComplete(PlayerOwner);
+    }
+
+    [Command]
     public void RequestNodeCapture()
     {
         GameManager.Inst.PlayerCaptureNode(PlayerOwner);
@@ -83,14 +99,29 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void StartPlayerCapture()
+    public void StartPlayerCapture(bool cont)
     {
         if (!isLocalPlayer) return;
 
         if (controlRoutine != null)
             StopCoroutine(controlRoutine);
 
+        contested = cont;
         controlRoutine = StartCoroutine(PlayerCaptureRoutine());
+    }
+
+    [ClientRpc]
+    public void AcceptIncomingBuffer()
+    {
+        Debug.Log($"[PLAYER] Server Sent Buffer {PlayerOwner.ToString()}");
+        if (!isLocalPlayer)
+        {
+            Debug.Log($"[PLAYER] Is not Local Player {PlayerOwner.ToString()}, not taking Buffer");
+            return; // Only Local Player should be receiving Buffers
+        }
+
+        Debug.Log($"[PLAYER] Is Local Player {PlayerOwner.ToString()}, taking Buffer");
+        AddRandomCommand();
     }
 
     [ClientRpc]
@@ -115,6 +146,12 @@ public class Player : NetworkBehaviour
         }
         Current = GridManager.Inst.GetNode(x, y);
         Current.SetSelected(PlayerOwner, true);
+    }
+
+    [ClientRpc]
+    public void SetContested(bool cont)
+    {
+        if (isLocalPlayer) contested = cont;
     }
 
     #endregion
@@ -155,13 +192,14 @@ public class Player : NetworkBehaviour
         Debug.Log($"[PLAYER] {((Node.Owner)PlayerOwner).ToString()} Starting Capture Process!");
 
         int difficulty = SetDifficulty();
-        List<string> commandList = SetCommandText(difficulty);
+        SetCommandText(difficulty);
 
         string currentInput = "";
         SetInputText(currentInput);
 
         Instructions.SetActive(true);
 
+        int bufferCount = 0;
         int matchedIndex = 0;
         char frameInput;
         while (true)
@@ -184,6 +222,16 @@ public class Player : NetworkBehaviour
                     {
                         CommandTextMatched.text = $"{CommandTextMatched.text}{trimmed} ";
                         matchedIndex++;
+
+                        if (contested)
+                        {
+                            bufferCount++;
+                            if (bufferCount >= GameManager.Inst.ContestBuffer)
+                            {
+                                bufferCount = 0;
+                                ReportBufferComplete();
+                            }
+                        }
 
                         if (matchedIndex >= commandList.Count)
                         {
@@ -282,18 +330,23 @@ public class Player : NetworkBehaviour
     {
         CommandText.text = "";
         CommandTextMatched.text = "";
-        List<string> commandList = new List<string>();
-        for (int line = 0; line < (difficulty + GameManager.Inst.CaptureBaseLines) * 4; line++)
+        commandList.Clear();
+        for (int com = 0; com < (difficulty + GameManager.Inst.CaptureBaseLines) /** 4*/; com++)
         {
-            string word = "";
-            for (int c = 0; c < 4; c++)
-            {
-                word += chars[Random.Range(0, chars.Length)];
-            }
-            commandList.Add(word);
-            CommandText.text = $"{CommandText.text}{word} ";
+            AddRandomCommand();
         }
         return commandList;
+    }
+
+    protected void AddRandomCommand()
+    {
+        string word = "";
+        for (int c = 0; c < 1; c++)
+        {
+            word += chars[Random.Range(0, chars.Length)];
+        }
+        commandList.Add(word);
+        CommandText.text = $"{CommandText.text}{word} ";
     }
 
     protected void SetInputText(string currentInput)
