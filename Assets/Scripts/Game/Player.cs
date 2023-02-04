@@ -469,6 +469,7 @@ public class Player : NetworkBehaviour
     protected int CountDifficulty()
     {
         int difficulty = 0;
+        
         if (Current.CurrentOwner != Node.Owner.Neutral && Current.CurrentOwner != PlayerOwner)
         {
             difficulty += GameManager.Inst.EnemyNodeDifficulty;
@@ -530,7 +531,7 @@ public class Player : NetworkBehaviour
         CommandText.text = "";
         CommandTextMatched.text = "";
         commandList.Clear();
-        for (int com = 0; com < (difficulty + GameManager.Inst.CaptureBaseLines) /** 4*/; com++)
+        for (int com = 0; com < (difficulty + GameManager.Inst.CaptureBaseLines) * 4; com++)
         {
             AddRandomCommand();
         }
@@ -540,7 +541,7 @@ public class Player : NetworkBehaviour
     protected void AddRandomCommand()
     {
         string word = "";
-        for (int c = 0; c < 1; c++)
+        for (int c = 0; c < 4; c++)
         {
             word += chars[Random.Range(0, chars.Length)];
         }
