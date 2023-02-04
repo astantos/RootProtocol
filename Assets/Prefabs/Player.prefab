@@ -2280,6 +2280,7 @@ MonoBehaviour:
   PlayerOwner: 0
   BGM: {fileID: 5734941622645236949}
   BGMIntroDuration: 5
+  AudioManager: {fileID: 1484580140215373957}
   MovementDuration: 1.25
   TravelParticlesPrefab: {fileID: 1167625387337566759, guid: da22f1b29a3bc1846a78fa48f04d872a, type: 3}
   DeathParticlesPrefab: {fileID: 1167625387337566759, guid: 29ecabe0060ffc04e9c116f99b2a4f94, type: 3}
@@ -2717,6 +2718,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d498b7fe4baf01b438fd932a6d921037, type: 3}
+--- !u!114 &1484580140215373957 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7237658492225416212, guid: d498b7fe4baf01b438fd932a6d921037, type: 3}
+  m_PrefabInstance: {fileID: 8136629900104465553}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f523e597ac89dc747908afc3ddeab497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2966215387296571864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6467451523555155273, guid: d498b7fe4baf01b438fd932a6d921037, type: 3}

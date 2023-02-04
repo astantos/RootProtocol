@@ -15,6 +15,7 @@ public class Player : NetworkBehaviour
     [Header("Audio")]
     public AudioSource BGM;
     public float BGMIntroDuration;
+    public AudioManager AudioManager;
 
     [Header("Movement")]
     public float MovementDuration;
@@ -214,6 +215,7 @@ public class Player : NetworkBehaviour
         }
 
         Debug.Log($"[PLAYER] Is Local Player {PlayerOwner.ToString()}, taking Buffer");
+        AudioManager.PlayEffect(AudioManager.Effect.ReceiveBuffer);
         AddRandomCommand();
     }
 
@@ -314,12 +316,16 @@ public class Player : NetworkBehaviour
 
         yield return new WaitForSeconds(particles.main.duration + 0.5f);
 
+        AudioManager.PlayEffect(AudioManager.Effect.Capture);
+
         if (isServer)
             GameManager.Inst.PlayerCaptureNode(PlayerOwner);
     }
 
     protected IEnumerator MoveRoutine(int startX, int startY, int x, int y)
     {
+        AudioManager.PlayEffect(AudioManager.Effect.Move);
+
         Current.SetSelected(PlayerOwner, false);
         ParticleSystem travelparticles = GameObject.Instantiate(TravelParticlesPrefab);
 
@@ -433,6 +439,7 @@ public class Player : NetworkBehaviour
                             if (bufferCount >= GameManager.Inst.ContestBuffer)
                             {
                                 bufferCount = 0;
+                                AudioManager.PlayEffect(AudioManager.Effect.SendBuffer);
                                 ReportBufferComplete();
                             }
                         }
