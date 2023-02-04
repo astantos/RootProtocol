@@ -5,7 +5,13 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public enum Effect { Move, Capture, SendBuffer, ReceiveBuffer }
+    public enum Effect { 
+        Move,
+        StartCapture,
+        Capture, 
+        SendBuffer, 
+        ReceiveBuffer
+    }
     public AudioSource source;
 
     [Serializable]
