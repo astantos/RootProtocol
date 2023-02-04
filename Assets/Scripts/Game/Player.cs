@@ -122,7 +122,6 @@ public class Player : NetworkBehaviour
     public void RequestNodeCapture()
     {
         PlayCaptureAnimation(Current.Coord.x, Current.Coord.y);
-        GameManager.Inst.PlayerCaptureNode(PlayerOwner);
     }
 
     [Command]
@@ -172,15 +171,7 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void PlayCaptureAnimation(int x, int y)
     {
-        ParticleSystem particles = GameObject.Instantiate(CaptureParticlesPrefab);
-
-        particles.transform.position = GridManager.Inst.GetNode(x, y).transform.position;
-        particles.transform.Translate(Vector3.back);
-
-        MainModule main = particles.main;
-        main.startColor = PlayerOwner == Node.Owner.P1 ? Current.PlayerOneColor : Current.PlayerTwoColor;
-
-        particles.Play();
+        StartCoroutine(CaptureAnimationRoutine(x, y));
     }
 
     [ClientRpc]
@@ -307,6 +298,24 @@ public class Player : NetworkBehaviour
             timer += Time.deltaTime;
         }
         BGM.volume = 1;
+    }
+
+    protected IEnumerator CaptureAnimationRoutine(int x, int y)
+    {
+        ParticleSystem particles = GameObject.Instantiate(CaptureParticlesPrefab);
+
+        particles.transform.position = GridManager.Inst.GetNode(x, y).transform.position;
+        particles.transform.Translate(Vector3.back);
+
+        MainModule main = particles.main;
+        main.startColor = PlayerOwner == Node.Owner.P1 ? Current.PlayerOneColor : Current.PlayerTwoColor;
+
+        particles.Play();
+
+        yield return new WaitForSeconds(particles.main.duration + 0.5f);
+
+        if (isServer)
+            GameManager.Inst.PlayerCaptureNode(PlayerOwner);
     }
 
     protected IEnumerator MoveRoutine(int startX, int startY, int x, int y)
