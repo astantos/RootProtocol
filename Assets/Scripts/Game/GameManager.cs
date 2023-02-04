@@ -311,12 +311,10 @@ public class GameManager : NetworkBehaviour
         if (owner == Node.Owner.P1)
         {
             PlayerOne.AcceptLoseNode();
-            PlayerOne.StartPlayerControl();
         }
         else if (owner == Node.Owner.P2)
         {
             PlayerTwo.AcceptLoseNode();
-            PlayerTwo.StartPlayerControl();
         }
     }
 
