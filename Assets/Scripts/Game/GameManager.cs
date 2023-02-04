@@ -153,14 +153,17 @@ public class GameManager : NetworkBehaviour
 
     public void PlayerCaptureNode(Node.Owner owner)
     {
-        Node node = null;
+        Player player = null;
         if (owner == Node.Owner.P1)
-            node = PlayerOne.Current;
+            player = PlayerOne;
         else if (owner == Node.Owner.P2)
-            node = PlayerTwo.Current;
+            player = PlayerTwo;
 
-        if (node != null)
-            GridManager.SetNodeState(node.Coord.x, node.Coord.y, (int)owner);
+        if (player != null)
+        {
+            GridManager.SetNodeState(player.Current.Coord.x, player.Current.Coord.y, (int)owner);
+            player.StartPlayerControl();
+        }
 
 
     }
