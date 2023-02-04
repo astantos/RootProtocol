@@ -110,6 +110,11 @@ public class Player : NetworkBehaviour
     [Command]
     public void RequestPlayerMove(int x, int y, bool moveAnimation)
     {
+        if (controlRoutine != null)
+        {
+            StopCoroutine(controlRoutine);
+            controlRoutine = null;
+        }
         GameManager.Inst.MovePlayer((int)PlayerOwner, x, y, moveAnimation);
     }
 
