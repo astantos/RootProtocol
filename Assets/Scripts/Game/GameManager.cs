@@ -116,13 +116,14 @@ public class GameManager : NetworkBehaviour
         // Player One Setup
         PlayerOne.SetCurrentNode(0, 0);
         PlayerOne.SetStartNode(0, 0);
-        GridManager.SetNodeState(0, 0, (int)Node.Owner.P1);
+        GridManager.SetNodeOwner(0, 0, (int)Node.Owner.P1);
 
         // Player Two Setup
         int x = GridManager.Grid.Length - 1;
         int y = GridManager.Grid[x].Length - 1;
         PlayerTwo.SetCurrentNode(x, y);
-        GridManager.SetNodeState(x, y, (int)Node.Owner.P2);
+        PlayerTwo.SetStartNode(x, y);
+        GridManager.SetNodeOwner(x, y, (int)Node.Owner.P2);
 
         PlayerOne.StartPlayerControl();
         PlayerTwo.StartPlayerControl();
@@ -266,8 +267,28 @@ public class GameManager : NetworkBehaviour
 
         if (player != null)
         {
-            GridManager.SetNodeState(player.Current.Coord.x, player.Current.Coord.y, (int)owner);
-            player.StartPlayerControl();
+            GridManager.SetNodeOwner(player.Current.Coord.x, player.Current.Coord.y, (int)owner);
+            if (CheckGameWon(player) == false)
+            {
+                player.StartPlayerControl();
+            }
+            else
+            {
+                player.RunEndGame();
+                if(player.PlayerOwner == Node.Owner.P1)
+                {
+                    
+                }
+                else if (player.PlayerOwner == Node.Owner.P2)
+                {
+
+                }
+                else
+                {
+                    // Should never occur
+                    Debug.LogError("[ GAME MANAGER - CRITICAL ERROR] Invalid Player provded to end to game");
+                }
+            }
         }
     }
 
@@ -286,6 +307,24 @@ public class GameManager : NetworkBehaviour
         }
     }
 
+    protected bool CheckGameWon(Player player)
+    {
+        Node target = null;
+        if (player.PlayerOwner == Node.Owner.P1)
+        {
+            target = PlayerTwo.StartNode;
+        }
+        else if (player.PlayerOwner == Node.Owner.P2)
+        {
+            target = PlayerOne.StartNode;
+        }
+
+        if (player.Current.Coord.x == target.Coord.x && player.Current.Coord.y == target.Coord.y)
+        {
+            return true;
+        }
+        return false;
+    }
     #endregion
 
     #region Network Callbacks

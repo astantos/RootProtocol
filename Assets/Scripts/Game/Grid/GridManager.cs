@@ -136,7 +136,7 @@ public class GridManager : NetworkBehaviour
 
     #region RPCs
     [ClientRpc]
-    public void SetNodeState(int x, int y, int state)
+    public void SetNodeOwner(int x, int y, int state)
     {
         Grid[x][y].SetState((Node.Owner)state);
     }

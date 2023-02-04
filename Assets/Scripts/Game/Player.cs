@@ -11,13 +11,25 @@ public class Player : NetworkBehaviour
     public Node.Owner PlayerOwner;
 
     [Header("Capture")]
+    public GameObject GameUI;
     public TextMeshProUGUI Difficulty;
     public TextMeshProUGUI CommandText;
     public TextMeshProUGUI CommandTextMatched;
     public TextMeshProUGUI InputText;
     public TextMeshProUGUI TextHistory;
-
     public GameObject Instructions;
+
+    [Header("End Game Parameters")]
+    public float SpecialConsoleDuration;
+    public AnimationCurve SpecialConsoleCurve;
+    [Space]
+    public string RemoveCommand;
+    public float KeyInterval;
+
+    [Header("End Game Objects")]
+    public RectTransform SpecialConsole;
+    public TextMeshProUGUI SpecialConsoleText;
+    public GameObject SpecialConsoleInstructions;
 
     public Node StartNode { get; protected set; }
     public Node Previous { get; protected set; }
@@ -178,6 +190,14 @@ public class Player : NetworkBehaviour
         }
     }
 
+
+    [ClientRpc]
+    public void RunEndGame()
+    {
+        if (!isLocalPlayer) return;
+        StopAllCoroutines();
+        StartCoroutine(WinGameRoutine());
+    }
     #endregion
 
     #region Coroutines
@@ -279,6 +299,81 @@ public class Player : NetworkBehaviour
         }
         RequestNodeCapture();
     }
+    
+    protected IEnumerator WinGameRoutine()
+    {
+        GameUI.SetActive(false);
+
+        yield return LaunchSpecialConsole();
+        yield return TypeSpecialCommand();
+        yield return CloseSpecialConsole();
+
+        Debug.Log("[PLAYER] GAME OVER");
+
+        yield return null;
+    }
+
+    protected IEnumerator LaunchSpecialConsole()
+    {
+        float timer = 0;
+        while(timer < SpecialConsoleDuration)
+        {
+            float proportion = SpecialConsoleCurve.Evaluate(timer / SpecialConsoleDuration);
+            SpecialConsole.localScale = Vector3.Lerp( Vector3.zero, Vector3.one, proportion);
+
+            yield return null;
+            timer += Time.deltaTime;
+        }
+        SpecialConsole.localScale = Vector3.one;
+    }
+
+    protected IEnumerator TypeSpecialCommand()
+    {
+        // Type Command
+        int index = 0;
+        float timer = KeyInterval;
+        while (true)
+        {
+
+            if (timer >= KeyInterval)
+            {
+                timer -= KeyInterval;
+                SpecialConsoleText.text += RemoveCommand[index];
+                index++;
+            }
+
+            if (index >= RemoveCommand.Length)
+                break;
+
+            yield return null;
+            timer += Time.deltaTime;
+        }
+
+        SpecialConsoleInstructions.SetActive(true);
+
+        // Wait for ENTER key
+        while (true)
+        {
+            if (Input.GetKeyDown(KeyCode.Return)) break;
+            yield return null;
+        }
+    }
+
+    protected IEnumerator CloseSpecialConsole()
+    {
+        float timer = 0;
+        while(timer < SpecialConsoleDuration)
+        {
+            float proportion = SpecialConsoleCurve.Evaluate(timer / SpecialConsoleDuration);
+            proportion = 1 - proportion;
+            SpecialConsole.localScale = Vector3.Lerp( Vector3.zero, Vector3.one, proportion);
+
+            yield return null;
+            timer += Time.deltaTime;
+        }
+        SpecialConsole.localScale = Vector3.zero;
+    }
+
     #endregion
 
     #region Capture
