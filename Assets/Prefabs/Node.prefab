@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8982112321776121545}
   - component: {fileID: 4626302309835498929}
   - component: {fileID: 4846006641475614274}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DownPS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 7033445279301522665}
   - component: {fileID: 5191509067376822842}
   - component: {fileID: 1052266996780906340}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: P1Selected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9635,7 +9635,7 @@ GameObject:
   - component: {fileID: 6166853303108516585}
   - component: {fileID: 5563939814560868033}
   - component: {fileID: 4316296030774331576}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: P2Selected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14448,7 +14448,7 @@ GameObject:
   - component: {fileID: 6902233185493402818}
   - component: {fileID: 4936868109626795797}
   - component: {fileID: 854919830007191011}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14543,7 +14543,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1721648708731165712}
   - component: {fileID: 293100958887777794}
-  m_Layer: 0
+  - component: {fileID: 8575102786170330952}
+  m_Layer: 6
   m_Name: Node
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14606,13 +14607,30 @@ MonoBehaviour:
   P1Selected: {fileID: 5191509067376822842}
   P2Selected: {fileID: 5563939814560868033}
   NeutralColor: {r: 1, g: 1, b: 1, a: 0.19607843}
-  PlayerOneColor: {r: 0, g: 1, b: 0, a: 1}
-  PlayerTwoColor: {r: 1, g: 0, b: 0, a: 1}
+  PlayerOneColor: {r: 0, g: 1, b: 1, a: 1}
+  PlayerTwoColor: {r: 1, g: 0.39215687, b: 0, a: 1}
   DeadColor: {r: 0, g: 0, b: 0, a: 0}
   Neutral: {fileID: 7387831734166621693}
   PlayerOne: {fileID: 328324960159601868}
   PlayerTwo: {fileID: 4549720615093980287}
   Dead: {fileID: 1800814398835683741}
+--- !u!114 &8575102786170330952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794105751593230126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 27810cf17551d9d4f944b116b80bdded, type: 2}
+  isGlobal: 1
+  blendDistance: 0
+  weight: 1
+  priority: 0
 --- !u!1 &1800814398835683741
 GameObject:
   m_ObjectHideFlags: 0
@@ -14625,7 +14643,7 @@ GameObject:
   - component: {fileID: 5460911975976468735}
   - component: {fileID: 8151906015456598927}
   - component: {fileID: 1627957421652874867}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Dead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14722,7 +14740,7 @@ GameObject:
   - component: {fileID: 4619132027526760787}
   - component: {fileID: 6572067852743919022}
   - component: {fileID: 6429409961538655854}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerTwo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14818,7 +14836,7 @@ GameObject:
   - component: {fileID: 7018110601622355810}
   - component: {fileID: 8398943759586757691}
   - component: {fileID: 5024571949294312235}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightPS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19630,7 +19648,7 @@ GameObject:
   - component: {fileID: 6002594507600784749}
   - component: {fileID: 1750129753675811670}
   - component: {fileID: 4520125465265409686}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: UpPS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24443,7 +24461,7 @@ GameObject:
   - component: {fileID: 7246475802670038483}
   - component: {fileID: 7315706265508590102}
   - component: {fileID: 8500233924293459007}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Neutral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24539,7 +24557,7 @@ GameObject:
   - component: {fileID: 7853233346942690286}
   - component: {fileID: 811226672339499536}
   - component: {fileID: 5457276532062151837}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftPS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
