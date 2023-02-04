@@ -17,8 +17,9 @@ public class AudioManager : MonoBehaviour
     [Serializable]
     public struct SoundEffect 
     {
-        public Effect Effect;
-        public AudioClip Clip;
+        public Effect LocalEffect;
+        public AudioClip LocalPlayerClip;
+        public AudioClip OtherPlayerClip;
         public float Volume;
     }
 
@@ -28,9 +29,9 @@ public class AudioManager : MonoBehaviour
     {
         for (int index = 0; index < SoundEffects.Count; index++)
         {
-            if (SoundEffects[index].Effect == effect)
+            if (SoundEffects[index].LocalEffect == effect)
             {
-                source.PlayOneShot(SoundEffects[index].Clip, SoundEffects[index].Volume);
+                source.PlayOneShot(SoundEffects[index].LocalPlayerClip, SoundEffects[index].Volume);
                 return;
             }
         }

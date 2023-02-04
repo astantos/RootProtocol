@@ -73,7 +73,10 @@ public class Player : NetworkBehaviour
         base.OnStartClient();
         Debug.Log("[PLAYER_SCRIPT] Client Started");
         if (!isLocalPlayer)
+        {
             GameObject.Destroy(MainCamera.gameObject);
+            GameObject.Destroy(BGM);
+        }
     }
 
     public override void OnStartLocalPlayer()
