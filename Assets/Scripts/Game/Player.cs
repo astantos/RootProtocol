@@ -20,6 +20,9 @@ public class Player : NetworkBehaviour
     public float MovementDuration;
     public ParticleSystem TravelParticlesPrefab;
 
+    [Header("Death")]
+    public ParticleSystem DeathParticlesPrefab;
+
     [Header("Capture")]
     public GameObject GameUI;
     public TextMeshProUGUI Difficulty;
@@ -101,9 +104,9 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void RequestPlayerMove(int x, int y)
+    public void RequestPlayerMove(int x, int y, bool moveAnimation)
     {
-        GameManager.Inst.MovePlayer((int)PlayerOwner, x, y);
+        GameManager.Inst.MovePlayer((int)PlayerOwner, x, y, moveAnimation);
     }
 
     [Command]
@@ -119,6 +122,12 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
+    public void PlayDeathAnimation(int x, int y)
+    {
+        PlayDeathAnimationRpc(x, y);
+    }
+
+    [Command]
     public void RequestKillRoutine()
     {
         GameManager.Inst.RunKillRoutine(
@@ -126,6 +135,7 @@ public class Player : NetworkBehaviour
             Current.Coord.x, Current.Coord.y
         );
     }
+    
     #endregion
 
     #region RPCS
@@ -139,6 +149,20 @@ public class Player : NetworkBehaviour
     public void PlayMoveAnimation(int startX, int startY, int x, int y)
     {
         StartCoroutine(MoveRoutine(startX, startY, x, y));
+    }
+
+    [ClientRpc]
+    public void PlayDeathAnimationRpc(int x, int y)
+    {
+        ParticleSystem particles = GameObject.Instantiate(DeathParticlesPrefab);
+
+        particles.transform.position = GridManager.Inst.GetNode(x, y).transform.position;
+        particles.transform.Translate(Vector3.back);
+
+        MainModule main = particles.main;
+        main.startColor = PlayerOwner == Node.Owner.P1 ? Current.PlayerOneColor : Current.PlayerTwoColor;
+
+        particles.Play();
     }
 
     [ClientRpc]
@@ -223,14 +247,15 @@ public class Player : NetworkBehaviour
 
         if (Previous == null || Previous.CurrentOwner != PlayerOwner)
         {
+            PlayDeathAnimation(Current.Coord.x, Current.Coord.y);
             Previous = null;
-            RequestPlayerMove(StartNode.Coord.x, StartNode.Coord.y);
+            RequestPlayerMove(StartNode.Coord.x, StartNode.Coord.y, false);
         }
         else
         {
             Node temp = Previous;
             Previous = null;
-            RequestPlayerMove(temp.Coord.x, temp.Coord.y);
+            RequestPlayerMove(temp.Coord.x, temp.Coord.y, true);
         }
     }
 
@@ -284,7 +309,7 @@ public class Player : NetworkBehaviour
 
         // Offset
         travelparticles.transform.position = Current.transform.position;
-        travelparticles.transform.Translate(0, 0, -1);
+        travelparticles.transform.Translate(Vector3.back);
 
         // Apply Rotation
         travelparticles.transform.eulerAngles = rot;
@@ -333,7 +358,7 @@ public class Player : NetworkBehaviour
             }
 
             if (target != null)
-                RequestPlayerMove(target.Coord.x, target.Coord.y);
+                RequestPlayerMove(target.Coord.x, target.Coord.y, true);
 
             yield return null;
         }
@@ -615,7 +640,7 @@ public class Player : NetworkBehaviour
         CommandText.text = "";
         CommandTextMatched.text = "";
         commandList.Clear();
-        for (int com = 0; com < (difficulty + GameManager.Inst.CaptureBaseLines) * 4; com++)
+        for (int com = 0; com < (difficulty + GameManager.Inst.CaptureBaseLines) /** 4*/; com++)
         {
             AddRandomCommand();
         }
@@ -625,7 +650,7 @@ public class Player : NetworkBehaviour
     protected void AddRandomCommand()
     {
         string word = "";
-        for (int c = 0; c < 4; c++)
+        for (int c = 0; c < 1; c++)
         {
             word += chars[Random.Range(0, chars.Length)];
         }

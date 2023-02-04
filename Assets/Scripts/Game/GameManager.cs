@@ -135,14 +135,24 @@ public class GameManager : NetworkBehaviour
     #endregion
 
     #region Game Logic
-    public void MovePlayer(int player, int x, int y)
+    public void MovePlayer(int player, int x, int y, bool moveAnimation)
     {
         Node.Owner owner = (Node.Owner)player;
         Debug.Log($"[GAME MANAGER] {owner.ToString()} requested to move to {x}, {y}");
         if (owner == Node.Owner.P1)
-            PlayerOne.PlayMoveAnimation(PlayerOne.Current.Coord.x, PlayerOne.Current.Coord.y, x, y);
+        {
+            if (moveAnimation)
+                PlayerOne.PlayMoveAnimation(PlayerOne.Current.Coord.x, PlayerOne.Current.Coord.y, x, y);
+            else
+                CompleteMove(player, x, y);
+        }
         else if (owner == Node.Owner.P2)
-            PlayerTwo.PlayMoveAnimation(PlayerTwo.Current.Coord.x, PlayerTwo.Current.Coord.y, x, y);
+        {
+            if (moveAnimation)
+                PlayerTwo.PlayMoveAnimation(PlayerTwo.Current.Coord.x, PlayerTwo.Current.Coord.y, x, y);
+            else
+                CompleteMove(player, x, y);
+        }
     }
 
     public void CompleteMove(int player, int x, int y)
