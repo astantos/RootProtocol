@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using TMPro;
+using UnityEngine.UI;
 
 public class Player : NetworkBehaviour
 {
@@ -20,18 +21,25 @@ public class Player : NetworkBehaviour
     public GameObject Instructions;
 
     [Header("End Game Parameters")]
+    public float LoseGameDuration;
+    public float LoseGameOverlayAlpha;
+    [Space]
     public float SpecialConsoleDuration;
     public AnimationCurve SpecialConsoleCurve;
     [Space]
     public string RemoveCommand;
     public float KeyInterval;
     [Space]
-    public float KillInterval;
+    public float SummaryDuration;
 
     [Header("End Game Objects")]
+    public Image LoseGameOverlay;
     public RectTransform SpecialConsole;
     public TextMeshProUGUI SpecialConsoleText;
     public GameObject SpecialConsoleInstructions;
+    public Image SummaryScreen;
+    public TextMeshProUGUI WinText;
+    public TextMeshProUGUI LoseText;
 
     public Node StartNode { get; protected set; }
     public Node Previous { get; protected set; }
@@ -42,6 +50,8 @@ public class Player : NetworkBehaviour
     protected List<string> commandList;
     protected bool contested;
     #endregion
+
+    protected bool gameOver = false;
 
     private void Start()
     {
@@ -117,7 +127,7 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void StartPlayerControl()
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || gameOver) return;
         
         if (controlRoutine != null)
             StopCoroutine(controlRoutine);
@@ -128,7 +138,7 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void StartPlayerCapture(bool cont)
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || gameOver) return;
 
         if (controlRoutine != null)
             StopCoroutine(controlRoutine);
@@ -202,12 +212,19 @@ public class Player : NetworkBehaviour
     }
 
 
+
     [ClientRpc]
-    public void RunEndGame()
+    public void RunEndGame(bool won)
     {
+        gameOver = true;
+
         if (!isLocalPlayer) return;
-        StopAllCoroutines();
-        StartCoroutine(WinGameRoutine());
+        //StopAllCoroutines();
+        StopCoroutine(controlRoutine);
+        if (won)
+            StartCoroutine(WinGameRoutine());
+        else
+            StartCoroutine(LoseGameRoutine());
     }
     #endregion
 
@@ -325,6 +342,28 @@ public class Player : NetworkBehaviour
         yield return null;
     }
 
+    protected IEnumerator LoseGameRoutine()
+    {
+        WipeAllConsole();
+        GameUI.SetActive(false);
+
+        float maxAlpha = LoseGameOverlayAlpha / 255;
+        Color overlayColor = LoseGameOverlay.color;
+        float timer = 0; 
+        while (timer < LoseGameDuration)
+        {
+            float proportion = timer / LoseGameDuration;
+
+            overlayColor.a = proportion * maxAlpha;
+            LoseGameOverlay.color = overlayColor;
+            
+            yield return null;
+            timer += Time.deltaTime;
+        }
+        overlayColor.a = maxAlpha;
+        LoseGameOverlay.color = overlayColor;
+    }
+
     protected IEnumerator LaunchSpecialConsole()
     {
         float timer = 0;
@@ -384,6 +423,35 @@ public class Player : NetworkBehaviour
             timer += Time.deltaTime;
         }
         SpecialConsole.localScale = Vector3.zero;
+    }
+
+    protected IEnumerator SummaryRoutine(bool won)
+    {
+        SummaryScreen.gameObject.SetActive(true);
+        Color imageColor = SummaryScreen.color;
+
+        TextMeshProUGUI summaryText = won ? WinText : LoseText;
+        Color textColor = summaryText.color;
+
+        float timer = 0;
+        while (timer < SummaryDuration)
+        {
+            float proportion = timer / SummaryDuration;
+
+            imageColor.a = proportion;
+            SummaryScreen.color = imageColor;
+
+            textColor.a = proportion;
+            summaryText.color = textColor;
+            
+            yield return null;
+            timer += Time.deltaTime;
+        }
+        imageColor.a = 1;
+        SummaryScreen.color = imageColor;
+
+        textColor.a = 1;
+        summaryText.color = textColor;
     }
 
     #endregion
@@ -505,4 +573,11 @@ public class Player : NetworkBehaviour
         Instructions.SetActive(false);
     }
     #endregion
+
+    public void LaunchSummary (int x, int y)
+    {
+        bool won = !(x == StartNode.Coord.x && y == StartNode.Coord.y);
+        StopAllCoroutines();
+        StartCoroutine(SummaryRoutine(won));
+    }
 }

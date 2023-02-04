@@ -278,14 +278,14 @@ public class GameManager : NetworkBehaviour
             }
             else
             {
-                player.RunEndGame();
+                player.RunEndGame(true);
                 if(player.PlayerOwner == Node.Owner.P1)
                 {
-                    
+                    PlayerTwo.RunEndGame(false);    
                 }
                 else if (player.PlayerOwner == Node.Owner.P2)
                 {
-
+                    PlayerOne.RunEndGame(false);    
                 }
                 else
                 {
@@ -368,6 +368,9 @@ public class GameManager : NetworkBehaviour
             yield return null;
             timer += Time.deltaTime;
         }
+
+        if (PlayerOne.isLocalPlayer) PlayerOne.LaunchSummary(x, y);
+        if (PlayerTwo.isLocalPlayer) PlayerTwo.LaunchSummary(x, y);
 
         Debug.LogWarning("[GAME MANAGER] GAME IS OVER");
     }
