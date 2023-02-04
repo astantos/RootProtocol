@@ -11,6 +11,10 @@ public class Player : NetworkBehaviour
 
     public Node.Owner PlayerOwner;
 
+    [Header("Audio")]
+    public AudioSource BGM;
+    public float BGMIntroDuration;
+
     [Header("Capture")]
     public GameObject GameUI;
     public TextMeshProUGUI Difficulty;
@@ -58,6 +62,11 @@ public class Player : NetworkBehaviour
         commandList = new List<string>();
     }
 
+    protected void InitializeAudio()
+    {
+        StartCoroutine(BGMIntroRoutine());
+    }
+
     #region Network Callbacks 
     public override void OnStartClient()
     {
@@ -71,6 +80,9 @@ public class Player : NetworkBehaviour
     {
         base.OnStartLocalPlayer();
         Debug.Log("[PLAYER_SCRIPT] Local Player Started");
+
+        InitializeAudio();
+
         RequestPlayerRegistration();
     }
     #endregion
@@ -229,6 +241,20 @@ public class Player : NetworkBehaviour
     #endregion
 
     #region Coroutines
+    protected IEnumerator BGMIntroRoutine()
+    {
+        float timer = 0; 
+        while (timer < BGMIntroDuration)
+        {
+            float proportion = timer / BGMIntroDuration;
+            BGM.volume = proportion;
+
+            yield return null;
+            timer += Time.deltaTime;
+        }
+        BGM.volume = 1;
+    }
+
     protected IEnumerator PlayerControlRoutine()
     {
         Debug.Log($"[PLAYER] {((Node.Owner)PlayerOwner).ToString()} Control Started");
