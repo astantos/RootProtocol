@@ -190,11 +190,23 @@ public class GameManager : NetworkBehaviour
         if (owner == Node.Owner.P1)
         {
             player = PlayerOne;
+            if (PlayerTwoTarget != null 
+                && PlayerTwoTarget.Coord.x == PlayerOneTarget.Coord.x 
+                && PlayerTwoTarget.Coord.y == PlayerOneTarget.Coord.y)
+            {
+                NotifyPlayerLoseNode(Node.Owner.P2);
+            }
             PlayerOneTarget = null;
         }
         else if (owner == Node.Owner.P2)
         {
             player = PlayerTwo;
+            if (PlayerOneTarget != null 
+                && PlayerOneTarget.Coord.x == PlayerTwoTarget.Coord.x 
+                && PlayerOneTarget.Coord.y == PlayerTwoTarget.Coord.y)
+            {
+                NotifyPlayerLoseNode(Node.Owner.P1);
+            }
             PlayerTwoTarget = null;
         }
 
@@ -202,6 +214,20 @@ public class GameManager : NetworkBehaviour
         {
             GridManager.SetNodeState(player.Current.Coord.x, player.Current.Coord.y, (int)owner);
             player.StartPlayerControl();
+        }
+    }
+
+    protected void NotifyPlayerLoseNode(Node.Owner owner)
+    {
+        if (owner == Node.Owner.P1)
+        {
+            PlayerOne.AcceptLoseNode();
+            PlayerOne.StartPlayerControl();
+        }
+        else if (owner == Node.Owner.P2)
+        {
+            PlayerTwo.AcceptLoseNode();
+            PlayerTwo.StartPlayerControl();
         }
     }
 

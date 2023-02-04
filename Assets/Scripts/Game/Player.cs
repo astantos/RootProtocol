@@ -94,8 +94,12 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void StartPlayerControl()
     {
-        if (isLocalPlayer)
-            controlRoutine = StartCoroutine(PlayerControlRoutine());
+        if (!isLocalPlayer) return;
+        
+        if (controlRoutine != null)
+            StopCoroutine(controlRoutine);
+
+        controlRoutine = StartCoroutine(PlayerControlRoutine());
     }
 
     [ClientRpc]
@@ -152,6 +156,24 @@ public class Player : NetworkBehaviour
     public void SetContested(bool cont)
     {
         if (isLocalPlayer) contested = cont;
+    }
+
+    [ClientRpc]
+    public void AcceptLoseNode()
+    {
+        if (!isLocalPlayer) return;
+
+        if (Previous == null || Previous.CurrentOwner != PlayerOwner)
+        {
+            Previous = null;
+            RequestPlayerMove(StartNode.Coord.x, StartNode.Coord.y);
+        }
+        else
+        {
+            Node temp = Previous;
+            Previous = null;
+            RequestPlayerMove(temp.Coord.x, temp.Coord.y);
+        }
     }
 
     #endregion
