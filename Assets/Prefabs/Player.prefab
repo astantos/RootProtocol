@@ -2313,8 +2313,8 @@ MonoBehaviour:
   BGMIntroDuration: 5
   MovementDuration: 1.25
   TravelParticlesPrefab: {fileID: 1167625387337566759, guid: da22f1b29a3bc1846a78fa48f04d872a, type: 3}
-  Duration: 0
   DeathParticlesPrefab: {fileID: 1167625387337566759, guid: 29ecabe0060ffc04e9c116f99b2a4f94, type: 3}
+  CaptureParticlesPrefab: {fileID: 1167625387337566759, guid: 8c7741be04cd3c7478d1fcce2689a3df, type: 3}
   GameUI: {fileID: 2975390446029184677}
   Difficulty: {fileID: 6965738172766191030}
   CommandText: {fileID: 3059812332895774251}

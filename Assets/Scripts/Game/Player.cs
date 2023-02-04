@@ -24,6 +24,9 @@ public class Player : NetworkBehaviour
     public ParticleSystem DeathParticlesPrefab;
 
     [Header("Capture")]
+    public ParticleSystem CaptureParticlesPrefab;
+
+    [Header("Capture")]
     public GameObject GameUI;
     public TextMeshProUGUI Difficulty;
     public TextMeshProUGUI CommandText;
@@ -118,6 +121,7 @@ public class Player : NetworkBehaviour
     [Command]
     public void RequestNodeCapture()
     {
+        PlayCaptureAnimation(Current.Coord.x, Current.Coord.y);
         GameManager.Inst.PlayerCaptureNode(PlayerOwner);
     }
 
@@ -155,6 +159,20 @@ public class Player : NetworkBehaviour
     public void PlayDeathAnimationRpc(int x, int y)
     {
         ParticleSystem particles = GameObject.Instantiate(DeathParticlesPrefab);
+
+        particles.transform.position = GridManager.Inst.GetNode(x, y).transform.position;
+        particles.transform.Translate(Vector3.back);
+
+        MainModule main = particles.main;
+        main.startColor = PlayerOwner == Node.Owner.P1 ? Current.PlayerOneColor : Current.PlayerTwoColor;
+
+        particles.Play();
+    }
+
+    [ClientRpc]
+    public void PlayCaptureAnimation(int x, int y)
+    {
+        ParticleSystem particles = GameObject.Instantiate(CaptureParticlesPrefab);
 
         particles.transform.position = GridManager.Inst.GetNode(x, y).transform.position;
         particles.transform.Translate(Vector3.back);
