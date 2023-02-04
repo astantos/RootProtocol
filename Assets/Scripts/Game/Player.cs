@@ -140,8 +140,29 @@ public class Player : NetworkBehaviour
         int difficulty = SetDifficulty();
         List<string> commandList = SetCommandText(difficulty);
 
+        string currentInput = "";
+        char frameInput;
         while (true)
         {
+            if (Input.inputString.Length > 0)
+            {
+                frameInput = Input.inputString[0];
+
+                if (frameInput == '\b' && currentInput.Length > 0) // Backspace
+                {
+                    currentInput = currentInput.Substring(0, currentInput.Length - 1);
+                }
+                else if (frameInput == '\n' || frameInput == '\r') // Enter/Return
+                {
+                    // Do Comparison Here
+                }
+                else if (chars.Contains(char.ToUpper(frameInput)) || frameInput == ' ')
+                {
+                    currentInput = $"{currentInput}{char.ToUpper(frameInput)}";
+                }
+
+                SetInputText(currentInput);
+            }
             yield return null;
         }
     }
@@ -214,7 +235,7 @@ public class Player : NetworkBehaviour
         CommandText.text = "";
         CommandTextMatched.text = "";
         List<string> commandList = new List<string>();
-        for (int line = 0; line < difficulty + 2; line++)
+        for (int line = 0; line < (difficulty + 2) * 4; line++)
         {
             string word = "";
             for (int c = 0; c < 4; c++)
@@ -225,6 +246,11 @@ public class Player : NetworkBehaviour
             CommandText.text = $"{CommandText.text}{word} ";
         }
         return commandList;
+    }
+
+    protected void SetInputText(string currentInput)
+    {
+        InputText.text = $"<color=\"red\">$udo ></color> {currentInput}";
     }
     #endregion
 }

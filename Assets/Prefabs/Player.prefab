@@ -268,7 +268,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color=red>sudo > </color>THIS\n
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
   m_sharedMaterial: {fileID: -4779755346005786473, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
@@ -614,7 +614,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<color=red>sudo > </color>THIS '
+  m_text: <color=red>$udo > </color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
   m_sharedMaterial: {fileID: -4779755346005786473, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
