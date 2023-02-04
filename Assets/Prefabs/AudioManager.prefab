@@ -47,21 +47,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   source: {fileID: 7134735645673875984}
   SoundEffects:
-  - Effect: 0
-    Clip: {fileID: 8300000, guid: cf728bf87b5583c4b830862c1b601691, type: 3}
+  - LocalEffect: 0
+    LocalPlayerClip: {fileID: 8300000, guid: cf728bf87b5583c4b830862c1b601691, type: 3}
+    OtherPlayerClip: {fileID: 8300000, guid: 551efb5fac240c8448ec904a8fd14905, type: 3}
     Volume: 1
-  - Effect: 2
-    Clip: {fileID: 8300000, guid: 496569313bc1b0746a51f48e9963f482, type: 3}
+  - LocalEffect: 1
+    LocalPlayerClip: {fileID: 8300000, guid: a07c24e43f55fcc48b46a0e176d0935b, type: 3}
+    OtherPlayerClip: {fileID: 8300000, guid: 5b11f0dfffe8fe541992af108ffd29d7, type: 3}
     Volume: 1
-  - Effect: 3
-    Clip: {fileID: 8300000, guid: 122441238b981004c807febe04282689, type: 3}
+  - LocalEffect: 2
+    LocalPlayerClip: {fileID: 8300000, guid: 64a0d388e90d872449608b53be942401, type: 3}
+    OtherPlayerClip: {fileID: 8300000, guid: 6260a2e6b6008754281f611308fc6042, type: 3}
     Volume: 1
-  - Effect: 4
-    Clip: {fileID: 8300000, guid: 14010a8a54ec06149876c373cf0baade, type: 3}
+  - LocalEffect: 3
+    LocalPlayerClip: {fileID: 8300000, guid: 122441238b981004c807febe04282689, type: 3}
+    OtherPlayerClip: {fileID: 8300000, guid: 14010a8a54ec06149876c373cf0baade, type: 3}
     Volume: 1
-  - Effect: 1
-    Clip: {fileID: 8300000, guid: a10ec5b2df81a9641bd88d69f2739299, type: 3}
-    Volume: 0.5
+  - LocalEffect: 4
+    LocalPlayerClip: {fileID: 8300000, guid: 14010a8a54ec06149876c373cf0baade, type: 3}
+    OtherPlayerClip: {fileID: 8300000, guid: 122441238b981004c807febe04282689, type: 3}
+    Volume: 1
 --- !u!82 &7134735645673875984
 AudioSource:
   m_ObjectHideFlags: 0
