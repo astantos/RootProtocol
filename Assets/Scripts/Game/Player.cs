@@ -25,6 +25,8 @@ public class Player : NetworkBehaviour
     [Space]
     public string RemoveCommand;
     public float KeyInterval;
+    [Space]
+    public float KillInterval;
 
     [Header("End Game Objects")]
     public RectTransform SpecialConsole;
@@ -87,6 +89,15 @@ public class Player : NetworkBehaviour
     public void RequestNodeCapture()
     {
         GameManager.Inst.PlayerCaptureNode(PlayerOwner);
+    }
+
+    [Command]
+    public void RequestKillRoutine()
+    {
+        GameManager.Inst.RunKillRoutine(
+            StartNode.Coord.x, StartNode.Coord.y,
+            Current.Coord.x, Current.Coord.y
+        );
     }
     #endregion
 
@@ -307,6 +318,7 @@ public class Player : NetworkBehaviour
         yield return LaunchSpecialConsole();
         yield return TypeSpecialCommand();
         yield return CloseSpecialConsole();
+        RequestKillRoutine();
 
         Debug.Log("[PLAYER] GAME OVER");
 

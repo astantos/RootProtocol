@@ -34,8 +34,12 @@ public class GameManager : NetworkBehaviour
     public int EnemyNodeDifficulty;
     public int ContestBuffer;
 
+    [Space]
     [SyncVar] [SerializeField] Player PlayerOne;
     [SyncVar] [SerializeField] Player PlayerTwo;
+
+    [Space]
+    public float KillInterval;
 
     public Vector3 PlayerPos
     {
@@ -324,6 +328,56 @@ public class GameManager : NetworkBehaviour
             return true;
         }
         return false;
+    }
+    #endregion
+
+    #region Game End
+    public void RunKillRoutine(int startX, int startY, int x, int y)
+    {
+        KillRoutineRPC(startX, startY, x, y);
+    }
+
+    protected IEnumerator KillRoutine(int startX, int startY, int x, int y)
+    {
+        List<Node> frontNodes = new List<Node>();
+        frontNodes.Add(GridManager.Inst.GetNode(startX, startY));
+
+        float timer = KillInterval;
+        while (true)
+        {
+            bool foundTarget = false;
+            if (timer >= KillInterval)
+            {
+                timer -= KillInterval;
+                List<Node> newFront = new List<Node>();
+                for (int index = 0; index < frontNodes.Count; index++)
+                {
+                    Node current = frontNodes[index];
+                    if (current.Up.Node != null && current.Up.Node.CurrentOwner != Node.Owner.Dead) newFront.Add(current.Up.Node);
+                    if (current.Down.Node != null && current.Down.Node.CurrentOwner != Node.Owner.Dead) newFront.Add(current.Down.Node);
+                    if (current.Left.Node != null && current.Left.Node.CurrentOwner != Node.Owner.Dead) newFront.Add(current.Left.Node);
+                    if (current.Right.Node != null && current.Right.Node.CurrentOwner != Node.Owner.Dead) newFront.Add(current.Right.Node);
+                    current.SetState(Node.Owner.Dead);
+                    if (current.Coord.x == x && current.Coord.y == y) foundTarget = true;
+                }
+                frontNodes = newFront;
+            }
+
+            if (foundTarget) break;
+
+            yield return null;
+            timer += Time.deltaTime;
+        }
+
+        Debug.LogWarning("[GAME MANAGER] GAME IS OVER");
+    }
+    #endregion
+
+    #region RPCs
+    [ClientRpc]
+    public void KillRoutineRPC(int startX, int startY, int x, int y)
+    {
+        StartCoroutine(KillRoutine(startX, startY, x,y));
     }
     #endregion
 

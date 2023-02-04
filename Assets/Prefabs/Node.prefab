@@ -14608,9 +14608,11 @@ MonoBehaviour:
   NeutralColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   PlayerOneColor: {r: 0, g: 1, b: 0, a: 1}
   PlayerTwoColor: {r: 1, g: 0, b: 0, a: 1}
+  DeadColor: {r: 0, g: 0, b: 0, a: 0}
   Neutral: {fileID: 7387831734166621693}
   PlayerOne: {fileID: 328324960159601868}
   PlayerTwo: {fileID: 4549720615093980287}
+  Dead: {fileID: 1800814398835683741}
 --- !u!1 &1800814398835683741
 GameObject:
   m_ObjectHideFlags: 0
@@ -14673,7 +14675,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 65a0662da51f1da488e891de7dcbfdac, type: 2}
+  - {fileID: 2100000, guid: 597ace83c8686654380acb8c214f7fde, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
