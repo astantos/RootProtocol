@@ -50,14 +50,17 @@ MonoBehaviour:
   - Effect: 0
     Clip: {fileID: 8300000, guid: cf728bf87b5583c4b830862c1b601691, type: 3}
     Volume: 1
-  - Effect: 1
+  - Effect: 2
     Clip: {fileID: 8300000, guid: 496569313bc1b0746a51f48e9963f482, type: 3}
     Volume: 1
-  - Effect: 2
-    Clip: {fileID: 8300000, guid: 627c7685cbd4a444db5a712bc7315548, type: 3}
-    Volume: 1
   - Effect: 3
-    Clip: {fileID: 8300000, guid: c7b3a8a9df5cb0f4daef6fe93589dad5, type: 3}
+    Clip: {fileID: 8300000, guid: 122441238b981004c807febe04282689, type: 3}
+    Volume: 1
+  - Effect: 4
+    Clip: {fileID: 8300000, guid: 14010a8a54ec06149876c373cf0baade, type: 3}
+    Volume: 1
+  - Effect: 1
+    Clip: {fileID: 8300000, guid: a10ec5b2df81a9641bd88d69f2739299, type: 3}
     Volume: 1
 --- !u!82 &7134735645673875984
 AudioSource:
