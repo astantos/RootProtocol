@@ -4,7 +4,7 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 
-public class Player : NetworkBehaviour 
+public class Player : NetworkBehaviour
 {
     public Camera MainCamera;
 
@@ -16,7 +16,9 @@ public class Player : NetworkBehaviour
     public TextMeshProUGUI CommandTextMatched;
     public TextMeshProUGUI InputText;
     public TextMeshProUGUI TextHistory;
-    
+
+    public GameObject Instructions;
+
     public Node Current { get; protected set; }
     protected Coroutine controlRoutine;
 
@@ -49,6 +51,12 @@ public class Player : NetworkBehaviour
     public void RequestPlayerMove(int x, int y)
     {
         GameManager.Inst.MovePlayer((int)PlayerOwner, x, y);
+    }
+
+    [Command]
+    public void RequestNodeCapture()
+    {
+        GameManager.Inst.PlayerCaptureNode(PlayerOwner);
     }
     #endregion
 
@@ -141,6 +149,11 @@ public class Player : NetworkBehaviour
         List<string> commandList = SetCommandText(difficulty);
 
         string currentInput = "";
+        SetInputText(currentInput);
+
+        Instructions.SetActive(true);
+
+        int matchedIndex = 0;
         char frameInput;
         while (true)
         {
@@ -154,7 +167,25 @@ public class Player : NetworkBehaviour
                 }
                 else if (frameInput == '\n' || frameInput == '\r') // Enter/Return
                 {
-                    // Do Comparison Here
+                    AddTextHistory(currentInput);
+                    string trimmed = currentInput.Trim();
+                    currentInput = "";
+                    SetInputText(currentInput);
+                    if (trimmed.Equals(commandList[matchedIndex]))
+                    {
+                        CommandTextMatched.text = $"{CommandTextMatched.text}{trimmed} ";
+                        matchedIndex++;
+
+                        if (matchedIndex >= commandList.Count)
+                        {
+                            WipeAllConsole();
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        AddTextHistoryError();
+                    }
                 }
                 else if (chars.Contains(char.ToUpper(frameInput)) || frameInput == ' ')
                 {
@@ -165,6 +196,7 @@ public class Player : NetworkBehaviour
             }
             yield return null;
         }
+        RequestNodeCapture();
     }
     #endregion
 
@@ -186,40 +218,40 @@ public class Player : NetworkBehaviour
         {
             difficulty++;
         }
-        
+
         if (Current.Down.Node != null && Current.Down.Node.CurrentOwner != Node.Owner.Neutral
             && Current.Down.Node.CurrentOwner != PlayerOwner)
         {
             difficulty++;
         }
-        
+
         if (Current.Left.Node != null && Current.Left.Node.CurrentOwner != Node.Owner.Neutral
             && Current.Left.Node.CurrentOwner != PlayerOwner)
         {
             difficulty++;
         }
-        
+
         if (Current.Right.Node != null && Current.Right.Node.CurrentOwner != Node.Owner.Neutral
             && Current.Right.Node.CurrentOwner != PlayerOwner)
         {
             difficulty++;
         }
-        
+
         if (Current.Up.Node != null && Current.Up.Node.CurrentOwner == PlayerOwner)
         {
             difficulty--;
         }
-        
+
         if (Current.Down.Node != null && Current.Down.Node.CurrentOwner == PlayerOwner)
         {
             difficulty--;
         }
-        
+
         if (Current.Left.Node != null && Current.Left.Node.CurrentOwner == PlayerOwner)
         {
             difficulty--;
         }
-        
+
         if (Current.Right.Node != null && Current.Right.Node.CurrentOwner == PlayerOwner)
         {
             difficulty--;
@@ -251,6 +283,26 @@ public class Player : NetworkBehaviour
     protected void SetInputText(string currentInput)
     {
         InputText.text = $"<color=\"red\">$udo ></color> {currentInput}";
+    }
+
+    protected void AddTextHistory(string currentInput)
+    {
+        TextHistory.text = $"{TextHistory.text}\n<color=\"red\">$udo ></color> {currentInput}";
+    }
+
+    protected void AddTextHistoryError()
+    {
+        TextHistory.text = $"{TextHistory.text}\n<color=\"red\">Error: Unrecognised command</color>";
+    }
+
+    protected void WipeAllConsole()
+    {
+        TextHistory.text = "";
+        InputText.text = "";
+        Difficulty.text = "";
+        CommandText.text = "";
+        CommandTextMatched.text = "";
+        Instructions.SetActive(false);
     }
     #endregion
 }

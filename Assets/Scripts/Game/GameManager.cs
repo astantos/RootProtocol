@@ -151,6 +151,20 @@ public class GameManager : NetworkBehaviour
             PlayerTwo.StartPlayerCapture();
     }
 
+    public void PlayerCaptureNode(Node.Owner owner)
+    {
+        Node node = null;
+        if (owner == Node.Owner.P1)
+            node = PlayerOne.Current;
+        else if (owner == Node.Owner.P2)
+            node = PlayerTwo.Current;
+
+        if (node != null)
+            GridManager.SetNodeState(node.Coord.x, node.Coord.y, (int)owner);
+
+
+    }
+
     #endregion
 
     #region Network Callbacks

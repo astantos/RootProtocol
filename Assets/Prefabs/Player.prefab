@@ -403,7 +403,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Node Difficulty: <color=red>1</color>'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
   m_sharedMaterial: {fileID: -4779755346005786473, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
@@ -614,7 +614,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color=red>$udo > </color>
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
   m_sharedMaterial: {fileID: -4779755346005786473, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
@@ -837,7 +837,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: THIS WOOF MEOW ROAR THIS WOOF MEOW ROAR THIS WOOF MEOW ROAR
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
   m_sharedMaterial: {fileID: -4779755346005786473, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
@@ -999,7 +999,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8634697559810639865
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1183,8 +1183,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: THIS WOOF MEOW ROAR THIS WOOF MEOW ROAR THIS WOOF MEOW ROAR THIS WOOF MEOW
-    ROAR
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
   m_sharedMaterial: {fileID: -4779755346005786473, guid: 209d6b809ad58b34f9e7584b3477b238, type: 2}
@@ -1468,6 +1467,7 @@ MonoBehaviour:
   CommandTextMatched: {fileID: 6144567308367037219}
   InputText: {fileID: 5507376797959294526}
   TextHistory: {fileID: 5668798265997866371}
+  Instructions: {fileID: 4519580101602882917}
 --- !u!1 &8799655340367308866
 GameObject:
   m_ObjectHideFlags: 0
