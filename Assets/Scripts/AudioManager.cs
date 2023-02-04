@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public enum Effect { }
+    public enum Effect { Move, Capture, SendBuffer, ReceiveBuffer }
     public AudioSource source;
 
     [Serializable]
     public struct SoundEffect 
     {
         public Effect Effect;
-        public AudioClip Clip; 
+        public AudioClip Clip;
+        public float Volume;
     }
 
     public List<SoundEffect> SoundEffects;
@@ -23,7 +24,7 @@ public class AudioManager : MonoBehaviour
         {
             if (SoundEffects[index].Effect == effect)
             {
-                source.PlayOneShot(SoundEffects[index].Clip);
+                source.PlayOneShot(SoundEffects[index].Clip, SoundEffects[index].Volume);
                 return;
             }
         }
