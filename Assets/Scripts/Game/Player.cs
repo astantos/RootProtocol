@@ -2,14 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using TMPro;
 
 public class Player : NetworkBehaviour 
 {
     public Camera MainCamera;
 
     public Node.Owner PlayerOwner;
-    public Node Current { get; protected set; }
 
+    [Header("Capture")]
+    public TextMeshProUGUI Difficulty;
+    public TextMeshProUGUI CommandText;
+    public TextMeshProUGUI CommandTextMatched;
+    public TextMeshProUGUI InputText;
+    public TextMeshProUGUI TextHistory;
+    
+    public Node Current { get; protected set; }
     protected Coroutine controlRoutine;
 
     #region Network Callbacks 
@@ -94,6 +102,7 @@ public class Player : NetworkBehaviour
 
     #endregion
 
+    #region Coroutines
     protected IEnumerator PlayerControlRoutine()
     {
         Debug.Log($"[PLAYER] {((Node.Owner)PlayerOwner).ToString()} Control Started");
@@ -127,9 +136,95 @@ public class Player : NetworkBehaviour
     protected IEnumerator PlayerCaptureRoutine()
     {
         Debug.Log($"[PLAYER] {((Node.Owner)PlayerOwner).ToString()} Starting Capture Process!");
+
+        int difficulty = SetDifficulty();
+        List<string> commandList = SetCommandText(difficulty);
+
         while (true)
         {
             yield return null;
         }
     }
+    #endregion
+
+    #region Capture
+    protected int SetDifficulty()
+    {
+        int difficulty = CountDifficulty();
+
+        Difficulty.text = $"Node Difficulty: <color=\"red\">{difficulty}</color>";
+
+        return difficulty;
+    }
+
+    protected int CountDifficulty()
+    {
+        int difficulty = 0;
+        if (Current.Up.Node != null && Current.Up.Node.CurrentOwner != Node.Owner.Neutral
+            && Current.Up.Node.CurrentOwner != PlayerOwner)
+        {
+            difficulty++;
+        }
+        
+        if (Current.Down.Node != null && Current.Down.Node.CurrentOwner != Node.Owner.Neutral
+            && Current.Down.Node.CurrentOwner != PlayerOwner)
+        {
+            difficulty++;
+        }
+        
+        if (Current.Left.Node != null && Current.Left.Node.CurrentOwner != Node.Owner.Neutral
+            && Current.Left.Node.CurrentOwner != PlayerOwner)
+        {
+            difficulty++;
+        }
+        
+        if (Current.Right.Node != null && Current.Right.Node.CurrentOwner != Node.Owner.Neutral
+            && Current.Right.Node.CurrentOwner != PlayerOwner)
+        {
+            difficulty++;
+        }
+        
+        if (Current.Up.Node != null && Current.Up.Node.CurrentOwner == PlayerOwner)
+        {
+            difficulty--;
+        }
+        
+        if (Current.Down.Node != null && Current.Down.Node.CurrentOwner == PlayerOwner)
+        {
+            difficulty--;
+        }
+        
+        if (Current.Left.Node != null && Current.Left.Node.CurrentOwner == PlayerOwner)
+        {
+            difficulty--;
+        }
+        
+        if (Current.Right.Node != null && Current.Right.Node.CurrentOwner == PlayerOwner)
+        {
+            difficulty--;
+        }
+
+        difficulty = Mathf.Clamp(difficulty, 0, 3);
+        return difficulty;
+    }
+
+    protected string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    protected List<string> SetCommandText(int difficulty)
+    {
+        CommandText.text = "";
+        CommandTextMatched.text = "";
+        List<string> commandList = new List<string>();
+        for (int line = 0; line < difficulty + 2; line++)
+        {
+            string word = "";
+            for (int c = 0; c < 4; c++)
+            {
+                word += chars[Random.Range(0, chars.Length)];
+            }
+            commandList.Add(word);
+            CommandText.text = $"{CommandText.text}{word} ";
+        }
+        return commandList;
+    }
+    #endregion
 }
