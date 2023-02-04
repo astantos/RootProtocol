@@ -314,6 +314,8 @@ public class Player : NetworkBehaviour
 
         particles.Play();
 
+        AudioManager.PlayEffect(AudioManager.Effect.StartCapture);
+
         yield return new WaitForSeconds(particles.main.duration + 0.5f);
 
         AudioManager.PlayEffect(AudioManager.Effect.Capture);
