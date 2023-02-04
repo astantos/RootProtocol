@@ -139,7 +139,15 @@ public class GameManager : NetworkBehaviour
     {
         Node.Owner owner = (Node.Owner)player;
         Debug.Log($"[GAME MANAGER] {owner.ToString()} requested to move to {x}, {y}");
+        if (owner == Node.Owner.P1)
+            PlayerOne.PlayMoveAnimation(PlayerOne.Current.Coord.x, PlayerOne.Current.Coord.y, x, y);
+        else if (owner == Node.Owner.P2)
+            PlayerTwo.PlayMoveAnimation(PlayerTwo.Current.Coord.x, PlayerTwo.Current.Coord.y, x, y);
+    }
 
+    public void CompleteMove(int player, int x, int y)
+    {
+        Node.Owner owner = (Node.Owner)player;
         bool contested = false;
         if (GridManager.Grid[x][y].CurrentOwner == owner) 
         {
@@ -228,6 +236,7 @@ public class GameManager : NetworkBehaviour
                 PlayerTwo.StartPlayerCapture(contested);
             }
         }
+
     }
 
     public void AcceptBufferComplete(Node.Owner owner)

@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 
 public class Player : NetworkBehaviour
 {
@@ -14,6 +15,10 @@ public class Player : NetworkBehaviour
     [Header("Audio")]
     public AudioSource BGM;
     public float BGMIntroDuration;
+
+    [Header("Movement")]
+    public float MovementDuration;
+    public ParticleSystem TravelParticlesPrefab;
 
     [Header("Capture")]
     public GameObject GameUI;
@@ -128,6 +133,12 @@ public class Player : NetworkBehaviour
     public void PlayerRegistrationResponse(NetworkConnection conn, int result)
     {
         Debug.Log($"[ CLIENT ] Registration Response {(result != -1 ? "SUCCESS" : "FAILURE")}");
+    }
+
+    [ClientRpc]
+    public void PlayMoveAnimation(int startX, int startY, int x, int y)
+    {
+        StartCoroutine(MoveRoutine(startX, startY, x, y));
     }
 
     [ClientRpc]
@@ -255,6 +266,49 @@ public class Player : NetworkBehaviour
         BGM.volume = 1;
     }
 
+    protected IEnumerator MoveRoutine(int startX, int startY, int x, int y)
+    {
+        Current.SetSelected(PlayerOwner, false);
+        ParticleSystem travelparticles = GameObject.Instantiate(TravelParticlesPrefab);
+
+        // Calculate Direction
+        Vector3 rot = Vector3.zero;
+        if (x > startX) // RIGHT
+            rot = new Vector3(0, 90, 0);
+        else if (x < startX) // LEFT
+            rot = new Vector3(0, -90, 0);
+        else if (y > startY) // UP
+            rot = new Vector3(-90, 0, 0);
+        else
+            rot = new Vector3(90, 0, 0);
+
+        // Offset
+        travelparticles.transform.position = Current.transform.position;
+        travelparticles.transform.Translate(0, 0, -1);
+
+        // Apply Rotation
+        travelparticles.transform.eulerAngles = rot;
+
+        // Change Color
+        MainModule main = travelparticles.main;
+        main.startColor = PlayerOwner == Node.Owner.P1 ? Current.PlayerOneColor : Current.PlayerTwoColor;
+
+        travelparticles.Play();
+
+        float timer = 0;
+        while (timer < MovementDuration)
+        {
+            yield return null;
+            timer += Time.deltaTime;
+        }
+
+        travelparticles.Stop();
+
+        GridManager.Inst.GetNode(x, y).SetSelected(PlayerOwner, true);
+        if (isServer) GameManager.Inst.CompleteMove((int)PlayerOwner, x, y);
+    }
+
+    #region Permanent Routines
     protected IEnumerator PlayerControlRoutine()
     {
         Debug.Log($"[PLAYER] {((Node.Owner)PlayerOwner).ToString()} Control Started");
@@ -353,7 +407,9 @@ public class Player : NetworkBehaviour
         }
         RequestNodeCapture();
     }
-    
+    #endregion
+
+    #region End Game Routines    
     protected IEnumerator WinGameRoutine()
     {
         GameUI.SetActive(false);
@@ -480,6 +536,8 @@ public class Player : NetworkBehaviour
         summaryText.color = textColor;
     }
 
+    #endregion
+    
     #endregion
 
     #region Capture

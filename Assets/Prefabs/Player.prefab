@@ -2041,7 +2041,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 1
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2311,6 +2311,8 @@ MonoBehaviour:
   PlayerOwner: 0
   BGM: {fileID: 5734941622645236949}
   BGMIntroDuration: 5
+  MovementDuration: 1.25
+  TravelParticlesPrefab: {fileID: 1167625387337566759, guid: da22f1b29a3bc1846a78fa48f04d872a, type: 3}
   GameUI: {fileID: 2975390446029184677}
   Difficulty: {fileID: 6965738172766191030}
   CommandText: {fileID: 3059812332895774251}
