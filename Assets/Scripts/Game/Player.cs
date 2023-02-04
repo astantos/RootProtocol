@@ -65,6 +65,17 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
+    public void StartPlayerCapture()
+    {
+        if (!isLocalPlayer) return;
+
+        if (controlRoutine != null)
+            StopCoroutine(controlRoutine);
+
+        controlRoutine = StartCoroutine(PlayerCaptureRoutine());
+    }
+
+    [ClientRpc]
     public void SetPosition(Vector3 pos)
     {
         transform.position = pos;
@@ -109,6 +120,15 @@ public class Player : NetworkBehaviour
             if (target != null)
                 RequestPlayerMove(target.Coord.x, target.Coord.y);
 
+            yield return null;
+        }
+    }
+
+    protected IEnumerator PlayerCaptureRoutine()
+    {
+        Debug.Log($"[PLAYER] {((Node.Owner)PlayerOwner).ToString()} Starting Capture Process!");
+        while (true)
+        {
             yield return null;
         }
     }

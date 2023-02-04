@@ -30,8 +30,8 @@ public class GameManager : NetworkBehaviour
     public GridManager GridManagerPrefab;
     public GridManager GridManager;
 
-    [SyncVar][SerializeField] Player PlayerOne;
-    [SyncVar][SerializeField] Player PlayerTwo;
+    [SyncVar] [SerializeField] Player PlayerOne;
+    [SyncVar] [SerializeField] Player PlayerTwo;
 
     public Vector3 PlayerPos
     {
@@ -43,9 +43,9 @@ public class GameManager : NetworkBehaviour
             Vector3 secondPos = GridManager.Grid[width - 1][height - 1].transform.position;
 
             return new Vector3(
-                (firstPos.x + secondPos.x)/2,
-                (firstPos.y + secondPos.y)/2,
-                (firstPos.z + secondPos.z)/2
+                (firstPos.x + secondPos.x) / 2,
+                (firstPos.y + secondPos.y) / 2,
+                (firstPos.z + secondPos.z) / 2
             );
         }
     }
@@ -99,7 +99,7 @@ public class GameManager : NetworkBehaviour
         }
         StartGame();
     }
-    
+
     public void StartGame()
     {
         Debug.Log($"[GAME MANAGER] Starting Game");
@@ -110,7 +110,7 @@ public class GameManager : NetworkBehaviour
 
         // Player Two Setup
         int x = GridManager.Grid.Length - 1;
-        int y = GridManager.Grid[x].Length- 1;
+        int y = GridManager.Grid[x].Length - 1;
         PlayerTwo.SetCurrentNode(x, y);
         GridManager.SetNodeState(x, y, (int)Node.Owner.P2);
 
@@ -127,8 +127,8 @@ public class GameManager : NetworkBehaviour
 
         if (GridManager.Grid[x][y].CurrentOwner == Node.Owner.Neutral)
         {
-            GridManager.SetNodeState(x, y, player);
-
+            //GridManager.SetNodeState(x, y, player);
+            PlayerStartCapture(x, y, owner);
             if (owner == Node.Owner.P1)
                 PlayerOne.SetCurrentNode(x, y);
             else if (owner == Node.Owner.P2)
@@ -142,6 +142,15 @@ public class GameManager : NetworkBehaviour
                 PlayerTwo.SetCurrentNode(x, y);
         }
     }
+
+    public void PlayerStartCapture(int x, int y, Node.Owner owner)
+    {
+        if (owner == Node.Owner.P1)
+            PlayerOne.StartPlayerCapture();
+        else if (owner == Node.Owner.P2)
+            PlayerTwo.StartPlayerCapture();
+    }
+
     #endregion
 
     #region Network Callbacks
