@@ -163,6 +163,8 @@ public class Player : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
+        WipeAllConsole();
+
         if (Previous == null || Previous.CurrentOwner != PlayerOwner)
         {
             Previous = null;

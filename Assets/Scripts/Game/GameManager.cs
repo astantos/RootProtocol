@@ -135,27 +135,20 @@ public class GameManager : NetworkBehaviour
         Node.Owner owner = (Node.Owner)player;
         Debug.Log($"[GAME MANAGER] {owner.ToString()} requested to move to {x}, {y}");
 
-        if (GridManager.Grid[x][y].CurrentOwner == owner)
+        bool contested = false;
+        if (GridManager.Grid[x][y].CurrentOwner == owner) 
         {
-            if (owner == Node.Owner.P1)
-                PlayerOne.SetCurrentNode(x, y);
-            else if (owner == Node.Owner.P2)
-                PlayerTwo.SetCurrentNode(x, y);
-        }
-        else
-        {
-            bool contested = false;
             if (owner == Node.Owner.P1)
             {
                 PlayerOne.SetCurrentNode(x, y);
-                PlayerOneTarget = GridManager.Grid[x][y];
                 if (PlayerTwoTarget != null && x == PlayerTwoTarget.Coord.x && y == PlayerTwoTarget.Coord.y)
                 {
                     contested = true;
+                    PlayerOneTarget = GridManager.Grid[x][y];
+                    PlayerOne.StartPlayerCapture(contested);
+                    
                     PlayerTwo.SetContested(contested);
                 }
-
-                PlayerOne.StartPlayerCapture(contested);
             }
             else if (owner == Node.Owner.P2)
             {
@@ -164,9 +157,69 @@ public class GameManager : NetworkBehaviour
                 if (PlayerOneTarget != null && x == PlayerOneTarget.Coord.x && y == PlayerOneTarget.Coord.y)
                 {
                     contested = true;
+                    PlayerTwoTarget = GridManager.Grid[x][y];
+                    PlayerTwo.StartPlayerCapture(contested);
+                    
                     PlayerOne.SetContested(true);
                 }
-
+            }
+        }
+        else if (GridManager.Grid[x][y].CurrentOwner == Node.Owner.Neutral)
+        {
+            if (owner == Node.Owner.P1)
+            {
+                PlayerOne.SetCurrentNode(x, y);
+                
+                if (PlayerTwoTarget != null && x == PlayerTwoTarget.Coord.x && y == PlayerTwoTarget.Coord.y)
+                {
+                    contested = true;
+                    PlayerTwo.SetContested(contested);
+                }
+                
+                PlayerOneTarget = GridManager.Grid[x][y];
+                PlayerOne.StartPlayerCapture(contested);
+                    
+            }
+            else if (owner == Node.Owner.P2)
+            {
+                PlayerTwo.SetCurrentNode(x, y);
+                PlayerTwoTarget = GridManager.Grid[x][y];
+                
+                if (PlayerOneTarget != null && x == PlayerOneTarget.Coord.x && y == PlayerOneTarget.Coord.y)
+                {
+                    contested = true;
+                    PlayerOne.SetContested(true);
+                }
+                
+                PlayerTwoTarget = GridManager.Grid[x][y];
+                PlayerTwo.StartPlayerCapture(contested);
+                    
+            }
+        }
+        else // Opponent's Node
+        {
+            if (owner == Node.Owner.P1)
+            {
+                PlayerOne.SetCurrentNode(x, y);
+                if (PlayerTwo.Current.Coord.x == x && PlayerTwo.Current.Coord.y == y)
+                {
+                    contested = true;
+                    PlayerTwoTarget = GridManager.Grid[x][y];
+                    PlayerTwo.StartPlayerCapture(contested);
+                }
+                PlayerOneTarget = GridManager.Grid[x][y];
+                PlayerOne.StartPlayerCapture(contested);
+            }
+            else if (owner == Node.Owner.P2)
+            {
+                PlayerTwo.SetCurrentNode(x, y);
+                if (PlayerOne.Current.Coord.x == x && PlayerOne.Current.Coord.y == y)
+                {
+                    contested = true;
+                    PlayerOneTarget = GridManager.Grid[x][y];
+                    PlayerOne.StartPlayerCapture(contested);
+                }
+                PlayerTwoTarget = GridManager.Grid[x][y];
                 PlayerTwo.StartPlayerCapture(contested);
             }
         }
@@ -187,6 +240,7 @@ public class GameManager : NetworkBehaviour
     public void PlayerCaptureNode(Node.Owner owner)
     {
         Player player = null;
+        Debug.Log($"[GAME MANAGER] Node Captured by {owner.ToString()}!");
         if (owner == Node.Owner.P1)
         {
             player = PlayerOne;
@@ -219,6 +273,7 @@ public class GameManager : NetworkBehaviour
 
     protected void NotifyPlayerLoseNode(Node.Owner owner)
     {
+        Debug.Log($"[GAME MANAGER] Notifyng {owner.ToString()} about Node Loss! Will Start Player Control.");
         if (owner == Node.Owner.P1)
         {
             PlayerOne.AcceptLoseNode();
