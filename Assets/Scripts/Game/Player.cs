@@ -222,6 +222,11 @@ public class Player : NetworkBehaviour
     protected int CountDifficulty()
     {
         int difficulty = 0;
+        if (Current.CurrentOwner != Node.Owner.Neutral && Current.CurrentOwner != PlayerOwner)
+        {
+            difficulty += GameManager.Inst.EnemyNodeDifficulty;
+        }
+
         if (Current.Up.Node != null && Current.Up.Node.CurrentOwner != Node.Owner.Neutral
             && Current.Up.Node.CurrentOwner != PlayerOwner)
         {
@@ -266,7 +271,9 @@ public class Player : NetworkBehaviour
             difficulty--;
         }
 
-        difficulty = Mathf.Clamp(difficulty, 0, 3);
+        // Max Difficulty: 3 Surrouding Enemy Nodes + Enemy Controlled Node value - Friendly Node you came from
+        difficulty = Mathf.Clamp(difficulty, 0, 3 + GameManager.Inst.EnemyNodeDifficulty - 1);
+
         return difficulty;
     }
 
@@ -276,7 +283,7 @@ public class Player : NetworkBehaviour
         CommandText.text = "";
         CommandTextMatched.text = "";
         List<string> commandList = new List<string>();
-        for (int line = 0; line < (difficulty + 2) * 4; line++)
+        for (int line = 0; line < (difficulty + GameManager.Inst.CaptureBaseLines) * 4; line++)
         {
             string word = "";
             for (int c = 0; c < 4; c++)

@@ -30,6 +30,9 @@ public class GameManager : NetworkBehaviour
     public GridManager GridManagerPrefab;
     public GridManager GridManager;
 
+    public int CaptureBaseLines;
+    public int EnemyNodeDifficulty;
+
     [SyncVar] [SerializeField] Player PlayerOne;
     [SyncVar] [SerializeField] Player PlayerTwo;
 
@@ -51,6 +54,7 @@ public class GameManager : NetworkBehaviour
     }
 
     protected Coroutine gameRoutine;
+
     #region Game Init
     public void Initialize()
     {
@@ -126,7 +130,14 @@ public class GameManager : NetworkBehaviour
         Node.Owner owner = (Node.Owner)player;
         Debug.Log($"[GAME MANAGER] {owner.ToString()} requested to move to {x}, {y}");
 
-        if (GridManager.Grid[x][y].CurrentOwner == Node.Owner.Neutral)
+        if (GridManager.Grid[x][y].CurrentOwner == owner)
+        {
+            if (owner == Node.Owner.P1)
+                PlayerOne.SetCurrentNode(x, y);
+            else if (owner == Node.Owner.P2)
+                PlayerTwo.SetCurrentNode(x, y);
+        }
+        else
         {
             //GridManager.SetNodeState(x, y, player);
             if (owner == Node.Owner.P1)
@@ -134,13 +145,6 @@ public class GameManager : NetworkBehaviour
             else if (owner == Node.Owner.P2)
                 PlayerTwo.SetCurrentNode(x, y);
             PlayerStartCapture(x, y, owner);
-        }
-        else if (GridManager.Grid[x][y].CurrentOwner == owner)
-        {
-            if (owner == Node.Owner.P1)
-                PlayerOne.SetCurrentNode(x, y);
-            else if (owner == Node.Owner.P2)
-                PlayerTwo.SetCurrentNode(x, y);
         }
     }
 
