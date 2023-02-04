@@ -25,13 +25,16 @@ public class AudioManager : MonoBehaviour
 
     public List<SoundEffect> SoundEffects;
 
-    public void PlayEffect(Effect effect)
+    public void PlayEffect(Effect effect, bool isLocalPlayer = true)
     {
         for (int index = 0; index < SoundEffects.Count; index++)
         {
             if (SoundEffects[index].LocalEffect == effect)
             {
-                source.PlayOneShot(SoundEffects[index].LocalPlayerClip, SoundEffects[index].Volume);
+                if (isLocalPlayer)
+                    source.PlayOneShot(SoundEffects[index].LocalPlayerClip, SoundEffects[index].Volume);
+                else
+                    source.PlayOneShot(SoundEffects[index].OtherPlayerClip, SoundEffects[index].Volume);
                 return;
             }
         }
