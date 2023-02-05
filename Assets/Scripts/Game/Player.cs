@@ -401,7 +401,10 @@ public class Player : NetworkBehaviour
             }
 
             if (target != null)
+            {
                 RequestPlayerMove(target.Coord.x, target.Coord.y, true);
+                break;
+            }
 
             yield return null;
         }
