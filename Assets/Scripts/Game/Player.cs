@@ -160,6 +160,12 @@ public class Player : NetworkBehaviour
     {
         UpdateCaptureProportionRpc(proportion);
     }
+
+    [Command]
+    public void StopCaptureLine()
+    {
+        StopCaptureLineRpc();
+    }
     #endregion
 
     #region RPCS
@@ -281,10 +287,11 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void AcceptLoseNode()
     {
+        CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
+        line.StopDataLine();
+
         if (!isLocalPlayer)
         {
-            CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
-            line.StopDataLine();
             return;
         }
 
@@ -326,6 +333,13 @@ public class Player : NetworkBehaviour
         CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
         line.UpdateCaptureProportion(proportion);
     }
+
+    [ClientRpc]
+    public void StopCaptureLineRpc()
+    {
+        CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
+        line.StopDataLine();
+    }
     #endregion
 
     #region Coroutines
@@ -345,10 +359,7 @@ public class Player : NetworkBehaviour
 
     protected IEnumerator CaptureAnimationRoutine(int x, int y)
     {
-
-        CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
-        line.StopDataLine();
-
+        StopCaptureLine();
         ParticleSystem particles = GameObject.Instantiate(CaptureParticlesPrefab);
 
         particles.transform.position = GridManager.Inst.GetNode(x, y).transform.position;

@@ -79,6 +79,7 @@ public class CaptureLine : MonoBehaviour
                 else
                 {
                     item = GameObject.Instantiate(ItemPrefabs[Random.Range(0, ItemPrefabs.Count)]);
+                    item.transform.parent = transform;
                 }
                 item.LifeTime = 0;
                 activePool.Add(item);
