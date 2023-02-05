@@ -77,6 +77,11 @@ MonoBehaviour:
     LocalPlayerVolume: 1
     OtherPlayerClip: {fileID: 8300000, guid: 65758f8197dbc804d8d43203dd7f2356, type: 3}
     OtherPlayerVolume: 1
+  - LocalEffect: 6
+    LocalPlayerClip: {fileID: 8300000, guid: cd15f00912a424d458dfaaa9612f63c6, type: 3}
+    LocalPlayerVolume: 0.75
+    OtherPlayerClip: {fileID: 8300000, guid: cd15f00912a424d458dfaaa9612f63c6, type: 3}
+    OtherPlayerVolume: 0.75
 --- !u!82 &7134735645673875984
 AudioSource:
   m_ObjectHideFlags: 0
