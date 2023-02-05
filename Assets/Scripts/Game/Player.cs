@@ -707,7 +707,7 @@ public class Player : NetworkBehaviour
     protected void AddRandomCommand()
     {
         string word = "";
-        for (int c = 0; c < 1; c++)
+        for (int c = 0; c < 4; c++)
         {
             word += chars[Random.Range(0, chars.Length)];
         }

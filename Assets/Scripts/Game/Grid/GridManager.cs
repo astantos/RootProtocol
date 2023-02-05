@@ -141,5 +141,13 @@ public class GridManager : NetworkBehaviour
         Grid[x][y].SetState((Node.Owner)state);
     }
 
+    [ClientRpc]
+    public void ScaleNode(int x, int y, float scale)
+    {
+        Vector3 newScale = Vector3.one * scale;
+        Grid[x][y].transform.localScale = newScale;
+        Grid[x][y].P1Selected.transform.localScale = newScale;
+        Grid[x][y].P2Selected.transform.localScale = newScale;
+    }
     #endregion
 }

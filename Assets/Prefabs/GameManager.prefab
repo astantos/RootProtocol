@@ -67,9 +67,10 @@ MonoBehaviour:
   syncInterval: 0.1
   GridManagerPrefab: {fileID: 5235753273544742288, guid: 721dd43b759cd9745a8b511ab530ea3b, type: 3}
   GridManager: {fileID: 0}
-  CaptureBaseLines: 1
-  EnemyNodeDifficulty: 0
-  ContestBuffer: 1
+  StartingNodeScale: 2
+  CaptureBaseLines: 2
+  EnemyNodeDifficulty: 2
+  ContestBuffer: 2
   PlayerOne: {fileID: 0}
   PlayerTwo: {fileID: 0}
   KillInterval: 0.5

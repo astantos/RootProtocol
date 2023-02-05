@@ -30,6 +30,7 @@ public class GameManager : NetworkBehaviour
     public GridManager GridManagerPrefab;
     public GridManager GridManager;
 
+    public float StartingNodeScale;
     public int CaptureBaseLines;
     public int EnemyNodeDifficulty;
     public int ContestBuffer;
@@ -120,6 +121,7 @@ public class GameManager : NetworkBehaviour
         // Player One Setup
         PlayerOne.SetCurrentNode(0, 0);
         PlayerOne.SetStartNode(0, 0);
+        GridManager.ScaleNode(0, 0, StartingNodeScale);
         GridManager.SetNodeOwner(0, 0, (int)Node.Owner.P1);
 
         // Player Two Setup
@@ -127,7 +129,9 @@ public class GameManager : NetworkBehaviour
         int y = GridManager.Grid[x].Length - 1;
         PlayerTwo.SetCurrentNode(x, y);
         PlayerTwo.SetStartNode(x, y);
+        GridManager.ScaleNode(x, y, StartingNodeScale);
         GridManager.SetNodeOwner(x, y, (int)Node.Owner.P2);
+
 
         PlayerOne.StartPlayerControl();
         PlayerTwo.StartPlayerControl();
