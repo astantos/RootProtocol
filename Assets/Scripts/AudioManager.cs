@@ -11,7 +11,8 @@ public class AudioManager : MonoBehaviour
         Capture, 
         SendBuffer, 
         ReceiveBuffer,
-        PlayerDeath
+        PlayerDeath,
+        InvalidMove,
     }
     public AudioSource source;
 
