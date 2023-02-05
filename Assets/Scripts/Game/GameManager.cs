@@ -388,8 +388,8 @@ public class GameManager : NetworkBehaviour
             timer += Time.deltaTime;
         }
 
-        if (PlayerOne.isLocalPlayer) PlayerOne.LaunchSummary(x, y);
-        if (PlayerTwo.isLocalPlayer) PlayerTwo.LaunchSummary(x, y);
+        if (PlayerOne != null && PlayerOne.isLocalPlayer) PlayerOne.LaunchSummary(x, y);
+        if (PlayerTwo != null && PlayerTwo.isLocalPlayer) PlayerTwo.LaunchSummary(x, y);
 
         Debug.LogWarning("[GAME MANAGER] GAME IS OVER");
     }

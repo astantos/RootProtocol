@@ -294,8 +294,10 @@ public class Player : NetworkBehaviour
         gameOver = true;
 
         if (!isLocalPlayer) return;
-        //StopAllCoroutines();
-        StopCoroutine(controlRoutine);
+        
+        if (controlRoutine != null)
+            StopCoroutine(controlRoutine);
+
         if (won)
             StartCoroutine(WinGameRoutine());
         else
