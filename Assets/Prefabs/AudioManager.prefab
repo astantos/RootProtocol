@@ -49,24 +49,34 @@ MonoBehaviour:
   SoundEffects:
   - LocalEffect: 0
     LocalPlayerClip: {fileID: 8300000, guid: cf728bf87b5583c4b830862c1b601691, type: 3}
+    LocalPlayerVolume: 1
     OtherPlayerClip: {fileID: 8300000, guid: 551efb5fac240c8448ec904a8fd14905, type: 3}
-    Volume: 1
+    OtherPlayerVolume: 1
   - LocalEffect: 1
     LocalPlayerClip: {fileID: 8300000, guid: a07c24e43f55fcc48b46a0e176d0935b, type: 3}
+    LocalPlayerVolume: 1
     OtherPlayerClip: {fileID: 8300000, guid: 5b11f0dfffe8fe541992af108ffd29d7, type: 3}
-    Volume: 1
+    OtherPlayerVolume: 1
   - LocalEffect: 2
     LocalPlayerClip: {fileID: 8300000, guid: 64a0d388e90d872449608b53be942401, type: 3}
+    LocalPlayerVolume: 1
     OtherPlayerClip: {fileID: 8300000, guid: 6260a2e6b6008754281f611308fc6042, type: 3}
-    Volume: 1
+    OtherPlayerVolume: 1
   - LocalEffect: 3
     LocalPlayerClip: {fileID: 8300000, guid: 122441238b981004c807febe04282689, type: 3}
+    LocalPlayerVolume: 1
     OtherPlayerClip: {fileID: 8300000, guid: 14010a8a54ec06149876c373cf0baade, type: 3}
-    Volume: 1
+    OtherPlayerVolume: 0.5
   - LocalEffect: 4
     LocalPlayerClip: {fileID: 8300000, guid: 14010a8a54ec06149876c373cf0baade, type: 3}
+    LocalPlayerVolume: 0.5
     OtherPlayerClip: {fileID: 8300000, guid: 122441238b981004c807febe04282689, type: 3}
-    Volume: 1
+    OtherPlayerVolume: 1
+  - LocalEffect: 5
+    LocalPlayerClip: {fileID: 8300000, guid: f564d239eda860b46b9a2de69b816ad8, type: 3}
+    LocalPlayerVolume: 1
+    OtherPlayerClip: {fileID: 8300000, guid: 65758f8197dbc804d8d43203dd7f2356, type: 3}
+    OtherPlayerVolume: 1
 --- !u!82 &7134735645673875984
 AudioSource:
   m_ObjectHideFlags: 0

@@ -10,7 +10,8 @@ public class AudioManager : MonoBehaviour
         StartCapture,
         Capture, 
         SendBuffer, 
-        ReceiveBuffer
+        ReceiveBuffer,
+        PlayerDeath
     }
     public AudioSource source;
 
@@ -19,8 +20,9 @@ public class AudioManager : MonoBehaviour
     {
         public Effect LocalEffect;
         public AudioClip LocalPlayerClip;
+        public float LocalPlayerVolume;
         public AudioClip OtherPlayerClip;
-        public float Volume;
+        public float OtherPlayerVolume;
     }
 
     public List<SoundEffect> SoundEffects;
@@ -32,9 +34,9 @@ public class AudioManager : MonoBehaviour
             if (SoundEffects[index].LocalEffect == effect)
             {
                 if (isLocalPlayer)
-                    source.PlayOneShot(SoundEffects[index].LocalPlayerClip, SoundEffects[index].Volume);
+                    source.PlayOneShot(SoundEffects[index].LocalPlayerClip, SoundEffects[index].LocalPlayerVolume);
                 else
-                    source.PlayOneShot(SoundEffects[index].OtherPlayerClip, SoundEffects[index].Volume);
+                    source.PlayOneShot(SoundEffects[index].OtherPlayerClip, SoundEffects[index].OtherPlayerVolume);
                 return;
             }
         }
