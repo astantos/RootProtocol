@@ -175,6 +175,7 @@ public class Player : NetworkBehaviour
         main.startColor = PlayerOwner == Node.Owner.P1 ? Current.PlayerOneColor : Current.PlayerTwoColor;
 
         particles.Play();
+        AudioManager.PlayEffect(AudioManager.Effect.PlayerDeath, isLocalPlayer);
     }
 
     [ClientRpc]
