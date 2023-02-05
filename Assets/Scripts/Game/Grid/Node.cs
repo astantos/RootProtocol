@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using MainModule = UnityEngine.ParticleSystem.MainModule;
 
 public class Node : MonoBehaviour
@@ -27,6 +28,11 @@ public class Node : MonoBehaviour
     public ParticleSystem P1Selected;
     public ParticleSystem P2Selected;
 
+    [Header("Shake Parameters")]
+    public float ShakeDuration;
+    public float ShakeAmount;
+    public float ShakeFrequency;
+
     [Header("Colors")]
     public Color NeutralColor;
     public Color PlayerOneColor;
@@ -39,7 +45,11 @@ public class Node : MonoBehaviour
     public GameObject PlayerTwo;
     public GameObject Dead;
 
+    public Vector3 OriginalPosition { get; protected set; }
     public Owner CurrentOwner { get; protected set; }
+
+    protected float shakeTimer;
+    protected Coroutine shakeRoutine;
 
     private void Start()
     {
@@ -48,6 +58,11 @@ public class Node : MonoBehaviour
         
         MainModule p2main = P2Selected.main;
         p2main.startColor = PlayerTwoColor;
+    }
+
+    public void StoreOriginalPosition()
+    {
+        OriginalPosition = transform.position;
     }
 
     public void SetState(Owner owner)
@@ -96,5 +111,43 @@ public class Node : MonoBehaviour
             if (selected) P2Selected.Play();
             else P2Selected.Stop();
         }
+    }
+
+    public void Shake()
+    {
+        if(shakeRoutine != null)
+        {
+            shakeTimer = 0;
+        }
+        else
+        {
+            shakeRoutine = StartCoroutine(ShakeRoutine());
+        }
+    }
+
+    protected IEnumerator ShakeRoutine()
+    {
+        float posChangeTime = 1 / ShakeFrequency;
+        Debug.LogWarning(posChangeTime);
+
+        float timer = posChangeTime;
+        while (shakeTimer < ShakeDuration)
+        {
+            if (timer >= posChangeTime)
+            {
+                transform.position = new Vector3(
+                    OriginalPosition.x + Random.Range(0, ShakeAmount),
+                    OriginalPosition.y + Random.Range(0, ShakeAmount),
+                    OriginalPosition.z
+                );
+                timer -= posChangeTime;
+            }
+            yield return null;
+            timer += Time.deltaTime;
+            shakeTimer += Time.deltaTime;
+        }
+        transform.position = OriginalPosition;
+        shakeTimer = 0;
+        shakeRoutine = null;
     }
 }

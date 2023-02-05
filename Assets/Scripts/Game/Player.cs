@@ -393,21 +393,53 @@ public class Player : NetworkBehaviour
         while (true)
         {
             Node target = null;
-            if (Input.GetKeyDown(KeyCode.UpArrow) && Current.Up.Node != null)
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                target = Current.Up.Node;
+                if (Current.Up.Node != null)
+                {
+                    target = Current.Up.Node;
+                }
+                else
+                {
+                    GridManager.Inst.GetNode(Current.Coord.x, Current.Coord.y).Shake();
+                    AudioManager.PlayEffect(AudioManager.Effect.InvalidMove, isLocalPlayer);
+                }
             }
-            else if (Input.GetKeyDown(KeyCode.DownArrow) && Current.Down.Node != null)
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                target = Current.Down.Node;
+                if (Current.Down.Node != null)
+                {
+                    target = Current.Down.Node;
+                }
+                else
+                {
+                    GridManager.Inst.GetNode(Current.Coord.x, Current.Coord.y).Shake();
+                    AudioManager.PlayEffect(AudioManager.Effect.InvalidMove, isLocalPlayer);
+                }
             }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow) && Current.Left.Node != null)
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                target = Current.Left.Node;
+                if (Current.Left.Node != null)
+                {
+                    target = Current.Left.Node;
+                }
+                else
+                {
+                    GridManager.Inst.GetNode(Current.Coord.x, Current.Coord.y).Shake();
+                    AudioManager.PlayEffect(AudioManager.Effect.InvalidMove, isLocalPlayer);
+                }
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow) && Current.Right.Node != null)
             {
-                target = Current.Right.Node;
+                if (Current.Right.Node != null)
+                {
+                    target = Current.Right.Node;
+                }
+                else
+                {
+                    GridManager.Inst.GetNode(Current.Coord.x, Current.Coord.y).Shake();
+                    AudioManager.PlayEffect(AudioManager.Effect.InvalidMove, isLocalPlayer);
+                }
             }
 
             if (target != null)
@@ -415,7 +447,7 @@ public class Player : NetworkBehaviour
                 RequestPlayerMove(target.Coord.x, target.Coord.y, true);
                 break;
             }
-
+            
             yield return null;
         }
     }

@@ -14606,6 +14606,9 @@ MonoBehaviour:
     particles: {fileID: 8398943759586757691}
   P1Selected: {fileID: 5191509067376822842}
   P2Selected: {fileID: 5563939814560868033}
+  ShakeDuration: 0.25
+  ShakeAmount: 0.125
+  ShakeFrequency: 10
   NeutralColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   PlayerOneColor: {r: 0, g: 1, b: 1, a: 1}
   PlayerTwoColor: {r: 1, g: 0.39215687, b: 0, a: 1}
