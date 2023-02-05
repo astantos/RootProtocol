@@ -698,7 +698,7 @@ public class Player : NetworkBehaviour
     {
         int difficulty = CountDifficulty();
 
-        Difficulty.text = $"Node Difficulty: <color=\"red\">{difficulty}</color>";
+        Difficulty.text = $"Node Difficulty: <color=\"yellow\">{difficulty}</color>";
 
         return difficulty;
     }
@@ -788,17 +788,17 @@ public class Player : NetworkBehaviour
 
     protected void SetInputText(string currentInput)
     {
-        InputText.text = $"<color=\"red\">$udo ></color> {currentInput}";
+        InputText.text = $"<color=#0206FF>$udo ></color> {currentInput}";
     }
 
     protected void AddTextHistory(string currentInput)
     {
-        TextHistory.text = $"{TextHistory.text}\n<color=\"red\">$udo ></color> {currentInput}";
+        TextHistory.text = $"{TextHistory.text}\n<color=#0206FF>$udo ></color> {currentInput}";
     }
 
     protected void AddTextHistoryError()
     {
-        TextHistory.text = $"{TextHistory.text}\n<color=\"red\">Error: Unrecognised command</color>";
+        TextHistory.text = $"{TextHistory.text}\n<color=#0206FF>Error: Unrecognised command</color>";
     }
 
     protected void WipeAllConsole()

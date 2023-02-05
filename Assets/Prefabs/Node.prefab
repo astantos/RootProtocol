@@ -14610,8 +14610,8 @@ MonoBehaviour:
   ShakeAmount: 0.125
   ShakeFrequency: 10
   NeutralColor: {r: 1, g: 1, b: 1, a: 0.19607843}
-  PlayerOneColor: {r: 0, g: 1, b: 1, a: 1}
-  PlayerTwoColor: {r: 1, g: 0.39215687, b: 0, a: 1}
+  PlayerOneColor: {r: 1, g: 1, b: 0, a: 1}
+  PlayerTwoColor: {r: 0, g: 0, b: 1, a: 1}
   DeadColor: {r: 0, g: 0, b: 0, a: 0}
   Neutral: {fileID: 7387831734166621693}
   PlayerOne: {fileID: 328324960159601868}
