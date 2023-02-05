@@ -40,6 +40,8 @@ public class Player : NetworkBehaviour
     public TextMeshProUGUI InputText;
     public TextMeshProUGUI TextHistory;
     public GameObject Instructions;
+    public CaptureLine PlayerOneCapture;
+    public CaptureLine PlayerTwoCapture;
 
     [Header("End Game Parameters")]
     public float LoseGameDuration;
@@ -211,13 +213,19 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void StartPlayerCapture(bool cont)
     {
-        if (!isLocalPlayer || gameOver) return;
+        if (gameOver) return;
 
-        if (controlRoutine != null)
-            StopCoroutine(controlRoutine);
+        if (isLocalPlayer)
+        {
+            if (controlRoutine != null)
+                StopCoroutine(controlRoutine);
 
-        contested = cont;
-        controlRoutine = StartCoroutine(PlayerCaptureRoutine());
+            contested = cont;
+            controlRoutine = StartCoroutine(PlayerCaptureRoutine());
+        }
+
+        CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
+        line.StartDataLine(StartNode.Coord.x, StartNode.Coord.y, Current.Coord.x, Current.Coord.y);
     }
 
     [ClientRpc]
@@ -268,7 +276,12 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     public void AcceptLoseNode()
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer)
+        {
+            CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
+            line.StopDataLine();
+            return;
+        }
 
         WipeAllConsole();
 
@@ -322,6 +335,10 @@ public class Player : NetworkBehaviour
 
     protected IEnumerator CaptureAnimationRoutine(int x, int y)
     {
+
+        CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
+        line.StopDataLine();
+
         ParticleSystem particles = GameObject.Instantiate(CaptureParticlesPrefab);
 
         particles.transform.position = GridManager.Inst.GetNode(x, y).transform.position;
