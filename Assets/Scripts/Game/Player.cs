@@ -17,6 +17,7 @@ public class Player : NetworkBehaviour
     public float BGMIntroDuration;
     public AudioManager AudioManager;
 
+    [Header("PARTICLES")]
     [Header("Movement")]
     public float MovementDuration;
     public ParticleSystem TravelParticlesPrefab;
@@ -26,6 +27,10 @@ public class Player : NetworkBehaviour
 
     [Header("Capture")]
     public ParticleSystem CaptureParticlesPrefab;
+
+    [Header("UI")]
+    public GameObject PlayerOneLabel;
+    public GameObject PlayerTwoLabel;
 
     [Header("Capture")]
     public GameObject GameUI;
@@ -155,6 +160,8 @@ public class Player : NetworkBehaviour
     public void PlayerRegistrationResponse(NetworkConnection conn, int result)
     {
         Debug.Log($"[ CLIENT ] Registration Response {(result != -1 ? "SUCCESS" : "FAILURE")}");
+        PlayerOneLabel.SetActive(result == 0);
+        PlayerTwoLabel.SetActive(result == 1);
     }
 
     [ClientRpc]
