@@ -172,6 +172,7 @@ public class GameManager : NetworkBehaviour
                     
                     PlayerTwo.SetContested(contested);
                 }
+                PlayerOne.StartPlayerControl();
             }
             else if (owner == Node.Owner.P2)
             {
@@ -185,6 +186,7 @@ public class GameManager : NetworkBehaviour
                     
                     PlayerOne.SetContested(true);
                 }
+                PlayerTwo.StartPlayerControl();
             }
         }
         else if (GridManager.Grid[x][y].CurrentOwner == Node.Owner.Neutral)
