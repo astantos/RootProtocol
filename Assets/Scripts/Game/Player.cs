@@ -154,7 +154,12 @@ public class Player : NetworkBehaviour
             Current.Coord.x, Current.Coord.y
         );
     }
-    
+   
+    [Command]    
+    public void UpdateCaptureProportion(float proportion)
+    {
+        UpdateCaptureProportionRpc(proportion);
+    }
     #endregion
 
     #region RPCS
@@ -299,8 +304,6 @@ public class Player : NetworkBehaviour
         }
     }
 
-
-
     [ClientRpc]
     public void RunEndGame(bool won)
     {
@@ -315,6 +318,13 @@ public class Player : NetworkBehaviour
             StartCoroutine(WinGameRoutine());
         else
             StartCoroutine(LoseGameRoutine());
+    }
+    
+    [ClientRpc] 
+    public void UpdateCaptureProportionRpc(float proportion)
+    {
+        CaptureLine line = PlayerOwner == Node.Owner.P1 ? PlayerOneCapture : PlayerTwoCapture;
+        line.UpdateCaptureProportion(proportion);
     }
     #endregion
 
@@ -504,6 +514,7 @@ public class Player : NetworkBehaviour
                     {
                         CommandTextMatched.text = $"{CommandTextMatched.text}{trimmed} ";
                         matchedIndex++;
+                        UpdateCaptureProportion(((float)matchedIndex) / commandList.Count);
 
                         if (contested)
                         {

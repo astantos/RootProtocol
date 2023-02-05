@@ -1781,10 +1781,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  MinMoveSpeed: 1
-  MaxMoveSpeed: 10
-  MinEmitSpeed: 1
-  MaxEmitSpeed: 10
+  MinMoveSpeed: 2
+  MaxMoveSpeed: 0.25
+  MinEmitSpeed: 2
+  MaxEmitSpeed: 0.25
   StopSpeed: 0.25
   ItemPrefabs:
   - {fileID: 69557566458259732, guid: 4f90bb478fe5a10458e481f1b30f3605, type: 3}
@@ -2857,10 +2857,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  MinMoveSpeed: 1
-  MaxMoveSpeed: 10
-  MinEmitSpeed: 1
-  MaxEmitSpeed: 10
+  MinMoveSpeed: 2
+  MaxMoveSpeed: 0.25
+  MinEmitSpeed: 2
+  MaxEmitSpeed: 0.25
   StopSpeed: 0.25
   ItemPrefabs:
   - {fileID: 7109643172218810384, guid: f47c9b7ad476d7b47b4699f6b4c9b7f9, type: 3}

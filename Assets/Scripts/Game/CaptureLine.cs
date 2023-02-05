@@ -13,6 +13,7 @@ public class CaptureLine : MonoBehaviour
     public float MaxEmitSpeed;
     public float StopSpeed;
 
+    protected float CaptureProportion;
     protected float CurMoveSpeed;
     protected float CurEmitSpeed;
 
@@ -41,6 +42,13 @@ public class CaptureLine : MonoBehaviour
         if (activeRoutine != null)
             StopCoroutine(activeRoutine);
         activeRoutine = StartCoroutine(StopDataLineRoutine());
+    }
+
+    public void UpdateCaptureProportion(float proportion)
+    {
+        CaptureProportion = proportion;
+        CurEmitSpeed = Mathf.Lerp(MinEmitSpeed, MaxEmitSpeed, CaptureProportion);
+        CurMoveSpeed = Mathf.Lerp(MinMoveSpeed, MaxMoveSpeed, CaptureProportion);
     }
 
     protected IEnumerator DataLineRoutine(int startX, int startY, int x, int y)
